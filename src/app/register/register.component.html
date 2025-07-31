@@ -1,0 +1,41 @@
+<h2>Inscription</h2>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div>
+        <label>Nom d'utilisateur:</label>
+        <input type="text" formControlName="login" />
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <input type="email" formControlName="email" />
+    </div>
+
+    <div>
+        <label>Mot de passe:</label>
+        <input type="password" formControlName="password" />
+    </div>
+
+    <div>
+        <label for="confirmPassword">Confirmez le mot de passe :</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword">
+        <div *ngIf="registerForm.errors?.passwordMismatch && registerForm.get('confirmPassword')?.touched">
+        <small style="color: red;">Les mots de passe ne correspondent pas.</small>
+        </div>
+    </div>
+
+    <div>
+        <label>Prénom:</label>
+        <input type="text" formControlName="firstName" />
+    </div>
+
+    <div>
+        <label>Nom:</label>
+        <input type="text" formControlName="lastName" />
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>
+</form>
+
+<p *ngIf="successMessage" style="color: green">{{ successMessage }}</p>
+<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
