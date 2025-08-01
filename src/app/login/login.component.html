@@ -1,19 +1,114 @@
-<div class="login-container">
-    <h2>Connexion</h2>
-
-    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-        <div>
-        <label for="username">Nom d'utilisateur</label>
-        <input id="username" formControlName="username" type="text" required />
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+        <i class="fas fa-briefcase me-2"></i>EmploiSénégal
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+            <a class="nav-link" href="#accueil">Accueil</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#emplois">Emplois</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#recruteurs">Recruteurs</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            <li class="nav-item ms-2">
+            <a class="btn btn-secondary-custom" routerLink="/login">Connexion</a>
+            </li>
+        </ul>
         </div>
+    </div>
+</nav>
 
-        <div>
-        <label for="password">Mot de passe</label>
-        <input id="password" formControlName="password" type="password" required />
+
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="w-100">
+    <h2 class="text-center text-dark mb-5">Connectez-vous à votre compte !</h2>
+
+    <div class="row justify-content-center align-items-stretch">
+      <!-- Bloc S’inscrire -->
+      <div class="col-md-5 mb-4 d-flex">
+        <div class="card shadow rounded-4 w-100 h-100 border-0 card-hover">
+          <div class="card-header text-white rounded-top-4" style="background-color: #07a311;">
+            <h4 class="mb-0">S’inscrire</h4>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="text-success fw-bold">Nos avantages</h5>
+            <ul class="list-unstyled flex-grow-1">
+              <li>✅ Inscription rapide</li>
+              <li>✅ Des recherches rapides et efficaces</li>
+              <li>✅ Publication d’annonces 24h/24 7j/7</li>
+              <li>✅ Plus de 1.000 recruteurs actifs</li>
+              <li>✅ Stricte confidentialité de vos données</li>
+            </ul>
+            <a href="/register" class="btn btn-secondary-custom px-4 py-2" style="width: fit-content;">S’inscrire</a>
+          </div>
         </div>
+      </div>
 
-        <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
-    </form>
+      <!-- Bloc Se connecter -->
+      <div class="col-md-6 mb-4 d-flex">
+        <div class="card shadow rounded-4 w-100 h-100 border-0 card-hover">
+          <div class="card-header text-white rounded-top-4" style="background-color: #07a311;">
+            <h4 class="mb-0">Se connecter</h4>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="flex-grow-1">
+              <div class="mb-3">
+                <label for="username" class="form-label">Nom d'utilisateur <span class="text-danger">*</span></label>
+                <input
+                  id="username"
+                  formControlName="username"
+                  type="email"
+                  class="form-control rounded-3 border-1"
+                  required
+                />
+              </div>
 
-    <p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+              <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input
+                    id="password"
+                    formControlName="password"
+                    type="password"
+                    class="form-control rounded-start-3 border-1"
+                    required
+                  />
+                  <span class="input-group-text rounded-end-3">
+                    <i class="bi bi-eye"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end mb-3">
+                <a href="#" class="text-danger text-decoration-none">Mot de passe oublié ?</a>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-secondary-custom"
+                [disabled]="loginForm.invalid"
+              >
+                Se connecter
+              </button>
+            </form>
+
+            <p *ngIf="errorMessage" class="text-danger mt-3 text-center">
+              {{ errorMessage }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
