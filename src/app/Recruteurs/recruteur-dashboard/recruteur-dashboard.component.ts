@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recruteur-dashboard',
-  imports: [],
   templateUrl: './recruteur-dashboard.component.html',
-  styleUrl: './recruteur-dashboard.component.css'
+  styleUrls: ['./recruteur-dashboard.component.css']
 })
 export class RecruteurDashboardComponent {
+  constructor(private router: Router) {}
 
+  allerAjouterOffre() {
+    this.router.navigate(['/recruteur/ajouter-offre']);
+  }
 }

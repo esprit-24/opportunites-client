@@ -4,6 +4,7 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { AdminDashboardComponent } from './Admin/admin-dashboard/admin-dashboard.component';
 import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candidat-dashboard.component';
 import { RecruteurDashboardComponent } from './Recruteurs/recruteur-dashboard/recruteur-dashboard.component';
+
 import { RegisterComponent } from './register/register.component';
 import { adminGuard } from './guards/admin.guard';
 import { candidatGuard } from './guards/candidat.guard';

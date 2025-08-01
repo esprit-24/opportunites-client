@@ -1,0 +1,100 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card border-success shadow">
+        <div class="card-header bg-success text-white text-center">
+          <h4 class="mb-0">🎯 Ajouter une offre d'emploi</h4>
+        </div>
+        <div class="card-body">
+          <form #offreForm="ngForm" (ngSubmit)="soumettreOffre(offreForm)">
+            
+            <!-- Titre du poste -->
+            <div class="mb-3">
+              <label for="titre" class="form-label fw-bold text-success">Titre du poste</label>
+              <input
+                type="text"
+                id="titre"
+                name="titre"
+                class="form-control border-success"
+                [(ngModel)]="offre.titre"
+                required
+                placeholder="Ex : Développeur Web, Community Manager..."
+              />
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="description" class="form-label fw-bold text-success">Description</label>
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                class="form-control border-success"
+                [(ngModel)]="offre.description"
+                required
+                placeholder="Ex : Missions, exigences, avantages..."
+              ></textarea>
+            </div>
+
+            <!-- Lieu -->
+            <div class="mb-3">
+              <label for="lieu" class="form-label fw-bold text-success">Lieu</label>
+              <input
+                type="text"
+                id="lieu"
+                name="lieu"
+                class="form-control border-success"
+                [(ngModel)]="offre.lieu"
+                required
+                placeholder="Ex : Dakar, télétravail, etc."
+              />
+            </div>
+
+            <!-- Type de contrat -->
+            <div class="mb-3">
+              <label for="typeContrat" class="form-label fw-bold text-success">Type de contrat</label>
+              <select
+                id="typeContrat"
+                name="typeContrat"
+                class="form-select border-success"
+                [(ngModel)]="offre.typeContrat"
+                required
+              >
+                <option value="" disabled selected>-- Sélectionner --</option>
+                <option value="CDI">CDI</option>
+                <option value="CDD">CDD</option>
+                <option value="Stage">Stage</option>
+                <option value="Freelance">Freelance</option>
+              </select>
+            </div>
+
+            <!-- Salaire -->
+            <div class="mb-3">
+              <label for="salaire" class="form-label fw-bold text-success">Salaire (optionnel)</label>
+              <input
+                type="number"
+                id="salaire"
+                name="salaire"
+                class="form-control border-success"
+                [(ngModel)]="offre.salaire"
+                placeholder="Montant en FCFA"
+              />
+            </div>
+
+            <!-- Bouton -->
+            <div class="text-center mt-4">
+              <button
+                type="submit"
+                class="btn btn-success px-5 py-2"
+                [disabled]="offreForm.invalid"
+              >
+                ✅ Publier l’offre
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

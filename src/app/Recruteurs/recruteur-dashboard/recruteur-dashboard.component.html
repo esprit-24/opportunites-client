@@ -1,1 +1,71 @@
-<p>recruteur-dashboard works!</p>
+<div class="container mt-4">
+  <h2 class="text-center mb-4 text-success fw-bold">Bienvenue sur votre tableau de bord</h2>
+
+  <!-- Statistiques -->
+  <div class="row text-center mb-4">
+    <div class="col-md-4">
+      <div class="card bg-light shadow-sm border-success">
+        <div class="card-body">
+          <h5 class="card-title text-success">Offres publiées</h5>
+          <p class="display-6 fw-bold">6</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-light shadow-sm border-success">
+        <div class="card-body">
+          <h5 class="card-title text-success">Candidatures reçues</h5>
+          <p class="display-6 fw-bold">24</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-light shadow-sm border-success">
+        <div class="card-body">
+          <h5 class="card-title text-success">Entretiens programmés</h5>
+          <p class="display-6 fw-bold">3</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions principales -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">📢 Publier une nouvelle offre</h5>
+          <p class="card-text">Attirez les meilleurs talents en postant une offre.</p>
+          <button class="btn btn-success" (click)="allerAjouterOffre()">Ajouter une offre</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">📄 Voir les candidatures</h5>
+          <p class="card-text">Consultez les profils des candidats intéressés.</p>
+          <button class="btn btn-outline-success">Voir les candidatures</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dernières offres -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">
+      Dernières offres publiées
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Développeur Full Stack - Dakar</li>
+      <li class="list-group-item">Chargé(e) de communication - Remote</li>
+      <li class="list-group-item">Data Analyst Junior - Saint-Louis</li>
+    </ul>
+  </div>
+
+  <!-- Message de motivation -->
+  <div class="alert alert-success text-center" role="alert">
+    💡 Conseil : Soyez réactif aux candidatures pour attirer les meilleurs profils !
+  </div>
+</div>
