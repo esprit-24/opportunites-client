@@ -48,4 +48,42 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
+.footer {
+  background: var(--dark-gray);
+  color: white;
+  padding: 3rem 0 1rem;
+}
+
+.footer-title {
+  color: var(--primary-yellow);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-link {
+  color: #bdc3c7;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.footer-link:hover {
+  color: var(--primary-yellow);
+}
+
+.footer-divider {
+  border-color: #495057;
+}
+
+.emploi-section {
+  background-color: #07a311; /* vert utilisé dans tes headers */
+  color: white;
+}
+
+.emploi-section h4 {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+
 
