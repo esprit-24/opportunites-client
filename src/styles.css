@@ -1,1 +1,104 @@
-/* You can add global styles to this file, and also import other style files */
+/* Custom CSS Variables - Inspired by Senegal colors */
+:root {
+  --primary-green: #00A651;
+  --primary-yellow: #FEDD00;
+  --primary-red: #E31837;
+  --dark-green: #008542;
+  --light-green: #4CAF50;
+  --dark-gray: #2C3E50;
+  --light-gray: #ECF0F1;
+  --white: #FFFFFF;
+}
+
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--dark-gray);
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Button Styles */
+.btn-primary-custom {
+  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 166, 81, 0.3);
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 166, 81, 0.4);
+  background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+}
+
+.btn-secondary-custom {
+  background: linear-gradient(135deg, var(--primary-yellow), #f1c40f);
+  border: none;
+  color: var(--dark-gray);
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(254, 221, 0, 0.3);
+}
+
+.btn-secondary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(254, 221, 0, 0.4);
+  background: linear-gradient(135deg, #f1c40f, var(--primary-yellow));
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-green);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem !important;
+  }
+}

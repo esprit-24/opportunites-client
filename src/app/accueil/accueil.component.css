@@ -1,0 +1,227 @@
+/* Header Styles */
+.navbar-custom {
+  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white !important;
+}
+
+.navbar-nav .nav-link {
+  color: white !important;
+  font-weight: 500;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--primary-yellow) !important;
+  transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  color: white;
+  position: relative;
+  padding-top: 100px;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;charset=utf8,<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(%23smallGrid)" /></svg>');
+  opacity: 0.3;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.hero-icon {
+  font-size: 8rem;
+  opacity: 0.3;
+}
+
+/* Search Section */
+.search-section {
+  background: var(--white);
+  padding: 4rem 0;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 3;
+  margin-top: -50px;
+  border-radius: 20px 20px 0 0;
+}
+
+.search-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.form-control-custom {
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 0.2rem rgba(0, 166, 81, 0.25);
+}
+
+/* Job Cards */
+.job-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.job-title {
+  color: var(--primary-green);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.company-name {
+  color: var(--dark-gray);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.job-location {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.job-type {
+  background: var(--primary-yellow);
+  color: var(--dark-gray);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.job-level {
+  background: var(--light-green);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  color: #ddd;
+}
+
+.sidebar-icon {
+  font-size: 1.5rem;
+}
+
+/* Stats Section */
+.stats-section {
+  background: linear-gradient(135deg, var(--light-gray), white);
+  padding: 4rem 0;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 2rem;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  display: block;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: var(--dark-gray);
+  font-weight: 500;
+}
+
+/* Recruiter Section */
+.recruiter-section {
+  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  color: white;
+  padding: 4rem 0;
+}
+
+/* Footer */
+.footer {
+  background: var(--dark-gray);
+  color: white;
+  padding: 3rem 0 1rem;
+}
+
+.footer-title {
+  color: var(--primary-yellow);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-link {
+  color: #bdc3c7;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.footer-link:hover {
+  color: var(--primary-yellow);
+}
+
+.footer-divider {
+  border-color: #495057;
+}
