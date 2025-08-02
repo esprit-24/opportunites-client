@@ -1,41 +1,144 @@
-<h2>Inscription</h2>
-
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div>
-        <label>Nom d'utilisateur:</label>
-        <input type="text" formControlName="login" />
+<!-- Navigation - Page d'inscription -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-pen-to-square me-2"></i>Inscription - EmploiSénégal
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Retour à l’accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#faq">FAQ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Assistance</a>
+        </li>
+      </ul>
     </div>
+  </div>
+</nav>
 
-    <div>
-        <label>Email:</label>
-        <input type="email" formControlName="email" />
-    </div>
 
-    <div>
-        <label>Mot de passe:</label>
-        <input type="password" formControlName="password" />
-    </div>
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="w-100">
+    <h2 class="text-center text-dark mb-5">
+      <i class="fas fa-user-plus text-success me-2 fs-2"></i> Candidats, inscrivez-vous en 1 minute !
+    </h2>
 
-    <div>
-        <label for="confirmPassword">Confirmez le mot de passe :</label>
-        <input type="password" id="confirmPassword" formControlName="confirmPassword">
-        <div *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
-        <small style="color: red;">Les mots de passe ne correspondent pas.</small>
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="card shadow rounded-4 border-0">
+          <div class="card-header text-white rounded-top-4" style="background-color: #07a311;">
+            <h4 class="mb-0">Vos informations</h4>
+          </div>
+
+          <div class="card-body p-4">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nom d'utilisateur *</label>
+                  <input type="text" formControlName="login" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Email *</label>
+                  <input type="email" formControlName="email" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Mot de passe *</label>
+                  <input type="password" formControlName="password" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Confirmez le mot de passe *</label>
+                  <input type="password" formControlName="confirmPassword" class="form-control" />
+                  <div *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
+                    <small class="text-danger">Les mots de passe ne correspondent pas.</small>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Prénom *</label>
+                  <input type="text" formControlName="firstName" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Nom *</label>
+                  <input type="text" formControlName="lastName" class="form-control" />
+                </div>
+              </div>
+
+              <div class="mt-4 text-end">
+                <button type="submit" class="btn btn-warning px-4" [disabled]="registerForm.invalid">
+                  <i class="fas fa-user-plus me-2"></i>S'inscrire
+                </button>
+              </div>
+
+              <p *ngIf="successMessage" class="text-success mt-3">{{ successMessage }}</p>
+              <p *ngIf="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+            </form>
+          </div>
         </div>
       </div>
-      
-    <div>
-        <label>Prénom:</label>
-        <input type="text" formControlName="firstName" />
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer bg-dark text-light pt-5" id="footer-inscription">
+  <div class="container">
+    <div class="row">
+
+      <!-- Informations sur l'inscription -->
+      <div class="col-lg-4 mb-4">
+        <h5 class="footer-title">Pourquoi s'inscrire ?</h5>
+        <p class="text-muted">
+          Rejoignez la communauté EmploiSénégal pour accéder aux meilleures offres,
+          déposer votre CV, et recevoir des alertes personnalisées.
+        </p>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-light"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Liens utiles pour les nouveaux -->
+      <div class="col-lg-4 mb-4">
+        <h6 class="footer-title">Nouveaux sur EmploiSénégal ?</h6>
+        <a href="#" class="footer-link d-block">Créer un compte</a>
+        <a href="#" class="footer-link d-block">Comment ça marche ?</a>
+        <a href="#" class="footer-link d-block">Avantages pour les candidats</a>
+        <a href="#" class="footer-link d-block">Questions fréquentes</a>
+      </div>
+
+      <!-- Assistance -->
+      <div class="col-lg-4 mb-4">
+        <h6 class="footer-title">Besoin d'aide ?</h6>
+        <a href="#" class="footer-link d-block">Contacter le support</a>
+        <a href="#" class="footer-link d-block">Conditions d'utilisation</a>
+        <a href="#" class="footer-link d-block">Politique de confidentialité</a>
+        <a href="#" class="footer-link d-block">Retour à l'accueil</a>
+      </div>
     </div>
 
-    <div>
-        <label>Nom:</label>
-        <input type="text" formControlName="lastName" />
+    <hr class="my-4 footer-divider">
+
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0 text-muted">&copy; 2025 EmploiSénégal – Inscription</p>
+      </div>
+      <div class="col-md-6 text-end">
+        <p class="mb-0 text-muted">
+          Avec vous à chaque étape de votre carrière.
+        </p>
+      </div>
     </div>
-
-    <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>
-</form>
-
-<p *ngIf="successMessage" style="color: green">{{ successMessage }}</p>
-<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+  </div>
+</footer>
