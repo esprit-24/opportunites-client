@@ -1,0 +1,78 @@
+/* Import global admin styles */
+@import '../admin-dashboard/admin-dashboard.component.css';
+
+/* User Management Specific Styles */
+.table th {
+  font-weight: 600;
+  color: var(--dark-gray);
+  border-bottom: 2px solid #e9ecef;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 1rem 0.75rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 166, 81, 0.05);
+}
+
+/* User Avatar */
+.rounded-circle {
+  object-fit: cover;
+  border: 2px solid #e9ecef;
+}
+
+/* Action Buttons */
+.btn-group .btn {
+  margin-right: 2px;
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0;
+}
+
+/* Modal Styles */
+.modal-content {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background: var(--light-gray);
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 15px 15px 0 0;
+}
+
+.modal-title {
+  color: var(--dark-gray);
+  font-weight: 600;
+}
+
+/* Badge Styles */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.5em 0.75em;
+}
+
+/* Empty State */
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .btn-group {
+    flex-direction: column;
+  }
+  
+  .btn-group .btn {
+    margin-bottom: 2px;
+    margin-right: 0;
+  }
+  
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+}

@@ -6,7 +6,7 @@ export interface User {
     email?: string;
     activated?: boolean;
     langKey?: string;
-    authorities?: string[];
+    authorities: string[];
     createdBy?: string;
     createdDate?: Date;
     lastModifiedBy?: string;
