@@ -4,6 +4,7 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { AdminDashboardComponent } from './Admin/admin-dashboard/admin-dashboard.component';
 import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candidat-dashboard.component';
 import { RecruteurDashboardComponent } from './Recruteurs/recruteur-dashboard/recruteur-dashboard.component';
+import { AjoutOffreComponent  }  from './Recruteurs/ajout-offre/ajout-offre.component';
 
 import { RegisterComponent } from './register/register.component';
 import { adminGuard } from './guards/admin.guard';
@@ -16,5 +17,6 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'admin', component: AdminDashboardComponent, canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
-    { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard] }
-];
+    { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
+    { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
+   ];
