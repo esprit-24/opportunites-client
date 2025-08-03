@@ -1,1 +1,339 @@
-<p>candidat-dashboard works!</p>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+        <i class="fas fa-briefcase me-2"></i>EmploiSénégal
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+            <a class="nav-link" href="/candidat#accueil">Accueil</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/candidat#emplois">Emplois</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/candidat#profil">Profil</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/candidat#contact">Contact</a>
+            </li>
+            <li class="nav-item ms-2">
+              <button class="btn btn-danger-custom" (click)="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i> Se déconnecter
+              </button>
+            </li>
+        </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section" id="accueil">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="hero-content fade-in-up">
+          <h1 class="hero-title">Trouvez votre emploi de rêve au Sénégal</h1>
+          <p class="hero-subtitle">
+            La première plateforme dédiée aux opportunités d'emploi pour les jeunes sénégalais.
+            Connectez-vous avec les meilleurs employeurs du pays.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <button class="btn btn-primary-custom">
+              <i class="fas fa-search me-2"></i>Chercher un emploi
+            </button>
+            <button class="btn btn-secondary-custom">
+              <i class="fas fa-upload me-2"></i>Déposer mon CV
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center">
+        <div class="hero-stats fade-in-up">
+          <div class="d-flex justify-content-center">
+            <i class="fas fa-users hero-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Search Section -->
+<section class="search-section">
+  <div class="container">
+    <div class="card search-card">
+      <h3 class="text-center mb-4">Recherche avancée d'opportunités</h3>
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+          <label class="form-label">Domaine</label>
+          <select class="form-select form-control-custom">
+            <option value="">Tous les domaines</option>
+          </select>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <label class="form-label">Type de contrat</label>
+           <select class="form-select form-control-custom">
+             <option value="">Tous les contrats</option>
+              <option *ngFor="let type of contratOptions" [value]="type">{{ type }}</option>
+           </select>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <label class="form-label">Ville</label>
+          <select class="form-select form-control-custom">
+            <option value="">Toutes les villes</option>
+            <option *ngFor="let ville of villes" [value]="ville.id">{{ ville.nom }}</option>
+          </select>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <label class="form-label">Salaire minimum</label>
+          <select class="form-select form-control-custom">
+            <option [value]="0">Indifférent</option>
+            <option [value]="100000">100 000 FCFA+</option>
+            <option [value]="200000">200 000 FCFA+</option>
+            <option [value]="300000">300 000 FCFA+</option>
+            <option [value]="500000">500 000 FCFA+</option>
+            <option [value]="1000000">1 000 000 FCFA+</option>
+          </select>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <button class="btn btn-primary-custom">
+          <i class="fas fa-search me-2"></i>Rechercher une opportunité
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Job Listings -->
+<section class="py-5" id="emplois">
+  <div class="container">
+    <h2 class="text-center mb-5">Opportunités d'emploi populaires</h2>
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="job-card" *ngFor="let opportunite of displayedOpportunites">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h4 class="job-title">{{ opportunite.titre }}</h4>
+              <p class="company-name">
+                <i class="fas fa-building me-2"></i>{{ opportunite.organisation.nom }}
+              </p>
+              <p class="job-location">
+                <i class="fas fa-map-marker-alt me-2"></i>{{ opportunite.ville.nom }}
+              </p>
+              <p class="text-muted small mb-2">{{ opportunite.description }}</p>
+              <div class="d-flex gap-2 flex-wrap">
+                <span class="job-type">{{ opportunite.typeContrat }}</span>
+                <span class="job-level">{{ opportunite.niveauEtude }}</span>
+              </div>
+            </div>
+            <div class="col-md-4 text-end">
+              <p class="fw-bold text-success mb-2">{{ opportunite.salaire }}</p>
+              <p class="text-muted small mb-3">
+                <i class="fas fa-users me-1"></i>{{ opportunite.nombrePostes }} poste(s)
+              </p>
+              <button class="btn btn-primary-custom btn-sm">
+                <i class="fas fa-paper-plane me-1"></i>Postuler
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4" *ngIf="false">
+          <i class="fas fa-search no-results-icon"></i>
+          <p class="text-muted mt-3">Aucune opportunité ne correspond à vos critères.</p>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card search-card">
+          <h5 class="mb-3">Conseils carrière</h5>
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-lightbulb text-warning me-3 sidebar-icon"></i>
+            <div>
+              <h6 class="mb-1">Optimisez votre CV</h6>
+              <small class="text-muted">Guide complet</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-comments text-primary me-3 sidebar-icon"></i>
+            <div>
+              <h6 class="mb-1">Préparez vos entretiens</h6>
+              <small class="text-muted">Conseils d'experts</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <i class="fas fa-network-wired text-info me-3 sidebar-icon"></i>
+            <div>
+              <h6 class="mb-1">Développez votre réseau</h6>
+              <small class="text-muted">Stratégies efficaces</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="card search-card mt-4">
+          <h5 class="mb-3">Alerte emploi</h5>
+          <p class="small text-muted mb-3">Recevez les nouvelles opportunités par email</p>
+          <div class="mb-3">
+            <input type="email" class="form-control form-control-custom" placeholder="Votre email">
+          </div>
+          <button class="btn btn-primary-custom w-100">
+            <i class="fas fa-bell me-2"></i>Créer une alerte
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="col-md-10 mb-4 d-flex mx-auto">
+  <div class="card shadow rounded-4 w-100 h-100 border-0 card-hover">
+    <div class="card-header text-white rounded-top-4" style="background-color: #07a311;">
+      <h4 class="mb-0">Offres d'emploi pour moi</h4>
+    </div>
+    <div class="card-body d-flex flex-column">
+
+      <!-- Exemple d'offre 1 -->
+      <div class="offre border rounded p-3 mb-3">
+        <h5 class="fw-bold mb-2">Développeur Angular</h5>
+        <p class="mb-1">Entreprise : Tech Solutions</p>
+        <p class="mb-2">Lieu : Dakar</p>
+        <button class="btn btn-danger">Voir détail</button>
+      </div>
+
+      <!-- Exemple d'offre 2 -->
+      <div class="offre border rounded p-3 mb-3">
+        <h5 class="fw-bold mb-2">Data Analyst Junior</h5>
+        <p class="mb-1">Entreprise : Analytica Group</p>
+        <p class="mb-2">Lieu : Saint-Louis</p>
+        <button class="btn btn-danger">Voir détail</button>
+      </div>
+
+      <!-- Exemple d'offre 3 -->
+      <div class="offre border rounded p-3 mb-3">
+        <h5 class="fw-bold mb-2">Chef de Projet IT</h5>
+        <p class="mb-1">Entreprise : ProjetX</p>
+        <p class="mb-2">Lieu : Thiès</p>
+        <button class="btn btn-danger">Voir détail</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="col-md-10 mb-4 d-flex mx-auto">
+  <div class="card shadow rounded-4 w-100 h-100 border-0 card-hover">
+    <div class="card-header text-white rounded-top-4" style="background-color: #07a311;">
+      <h4 class="mb-0">Suivi de mes candidatures</h4>
+    </div>
+    <div class="card-body d-flex flex-column justify-content-between">
+      <div class="text-center text-muted my-4">
+        <p class="mb-0 fs-5">Aucune offre trouvée pour l’instant</p>
+      </div>
+      <div class="text-end">
+        <button class="btn btn-danger">Gérer mes candidatures</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Opportunités</span>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Organisations</span>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Candidats inscrits</span>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Placements réussis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <h5 class="footer-title">EmploiSénégal</h5>
+        <p class="text-muted">
+          La plateforme de référence pour l'emploi des jeunes au Sénégal.
+          Nous connectons les talents avec les opportunités.
+        </p>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-light"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title">Candidats</h6>
+        <a href="#" class="footer-link">Rechercher un emploi</a>
+        <a href="#" class="footer-link">Déposer un CV</a>
+        <a href="#" class="footer-link">Alerte emploi</a>
+        <a href="#" class="footer-link">Conseils carrière</a>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title">Recruteurs</h6>
+        <a href="#" class="footer-link">Publier une opportunité</a>
+        <a href="#" class="footer-link">Rechercher des CV</a>
+        <a href="#" class="footer-link">Nos tarifs</a>
+        <a href="#" class="footer-link">Support</a>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title">Entreprise</h6>
+        <a href="#" class="footer-link">À propos</a>
+        <a href="#" class="footer-link">Notre équipe</a>
+        <a href="#" class="footer-link">Presse</a>
+        <a href="#" class="footer-link">Carrières</a>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title">Support</h6>
+        <a href="#" class="footer-link">Centre d'aide</a>
+        <a href="#" class="footer-link">Contact</a>
+        <a href="#" class="footer-link">CGU</a>
+        <a href="#" class="footer-link">Confidentialité</a>
+      </div>
+    </div>
+    <hr class="my-4 footer-divider">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0 text-muted">&copy; 2025 EmploiSénégal. Tous droits réservés.</p>
+      </div>
+      <div class="col-md-6 text-end">
+        <p class="mb-0 text-muted">
+          <i class="fas fa-heart text-danger"></i> Fait avec passion au Sénégal
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

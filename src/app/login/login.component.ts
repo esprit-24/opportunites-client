@@ -38,13 +38,13 @@ export class LoginComponent {
       next: (response) => {
         this.authService.saveToken(response.id_token);
         this.errorMessage = null;
-        
+
 
         const roles = this.authService.getUserRoles();
 
         if (roles.includes('ROLE_ADMIN')) {
           this.router.navigate(['/admin']);
-        } else if (roles.includes('ROLE_CANDIDAT')) {
+        } else if (roles.includes('ROLE_USER')) {
           this.router.navigate(['/candidat']); // Page candidat
         } else if (roles.includes('ROLE_RECRUTEUR')) {
           this.router.navigate(['/recruteur']);
