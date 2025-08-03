@@ -1,3 +1,4 @@
+<!--
 <table>
     <thead>
         <tr>
@@ -18,3 +19,100 @@
         </tr>
     </tbody>
 </table>
+-->
+
+<!-- Admin Layout -->
+<div class="admin-layout">
+  
+  <!-- Sidebar -->
+  <nav class="sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <i class="fas fa-shield-alt me-2"></i>
+        <span *ngIf="!sidebarCollapsed">Admin Panel</span>
+      </div>
+    </div>
+    
+    <div class="sidebar-menu">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-tachometer-alt"></i>
+            <span *ngIf="!sidebarCollapsed">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-users"></i>
+            <span *ngIf="!sidebarCollapsed">Utilisateurs</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/opportunities" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-briefcase"></i>
+            <span *ngIf="!sidebarCollapsed">Opportunités</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/applications" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-file-alt"></i>
+            <span *ngIf="!sidebarCollapsed">Candidatures</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/data" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-database"></i>
+            <span *ngIf="!sidebarCollapsed">Données de Base</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/reports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-chart-bar"></i>
+            <span *ngIf="!sidebarCollapsed">Rapports</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="sidebar-footer">
+      <button class="btn btn-outline-light btn-sm w-100" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span *ngIf="!sidebarCollapsed" class="ms-2">Déconnexion</span>
+      </button>
+    </div>
+  </nav>
+  
+  <!-- Main Content -->
+  <div class="main-content" [class.expanded]="sidebarCollapsed">
+    
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <div class="d-flex align-items-center justify-content-between">
+        <button class="btn btn-link sidebar-toggle" (click)="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="d-flex align-items-center">
+          <div class="dropdown">
+            <button class="btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-2"></i>Administrateur
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profil</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" (click)="logout()"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </div>
+  
+</div>

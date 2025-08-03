@@ -1,38 +1,43 @@
 import { Component } from '@angular/core';
-import { AdminService } from '../../services/admin.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent {
 
-  users!: any[];
+  sidebarCollapsed = false;
+  
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
 
-  constructor(private adminService: AdminService) { }
+  constructor(
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
-
-    this.adminService.getAllUsers().subscribe(
-      users => {
-        this.users = users;
-      }
-    );
-
+    
   }
 
-  activateUser(user: any) {
-    const updatedUser = { ...user, activated: true };
 
-    this.adminService.updateUser(updatedUser).subscribe(
-      () => {
-        user.activated = true; // Met à jour localement
-    });
+
+
+
+
+
+  logout(): void {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+      this.authService.logout();
+      window.location.reload(); // Recharge la page pour mettre à jour l'état de l'interface utilisateur
+    }
   }
-
 }

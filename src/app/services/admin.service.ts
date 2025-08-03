@@ -2,13 +2,27 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { User } from '../models/user.model';
+
+export interface AdminStats {
+  totalUsers: number;
+  totalCandidats: number;
+  totalRecruteurs: number;
+  totalOpportunites: number;
+  opportunitesActives: number;
+  opportunitesExpirees: number;
+  totalCandidatures: number;
+  candidaturesEnAttente: number;
+  candidaturesValidees: number;
+  organisationsActives: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  private apiUrl = 'http://localhost:9090/api/admin/users';
+  private readonly apiUrl = 'http://localhost:9090/api/admin';
 
   constructor(
     private http: HttpClient,
@@ -26,14 +40,34 @@ export class AdminService {
     });
   }
 
-  getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
+  // ***********************************************************************************************
+  // Gestion des utilisateurs
+  // ***********************************************************************************************
+
+  // Récupérer tous les utilisateurs
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/users`, {
       headers: this.getAuthHeaders()
     });
   }
 
-  updateUser(user: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${user.id}`, user, {
+  // Récupérer un utilisateur par son login
+  getUserByLogin(login: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/users/${login}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  // Mettre à jour un utilisateur
+  updateUser(user: User): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/users/${user.login}`, user, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  // Supprimer un utilisateur
+  deleteUser(user: User): Observable<{}> {
+    return this.http.delete(`${this.apiUrl}/users/${user.login}`, {
       headers: this.getAuthHeaders()
     });
   }
