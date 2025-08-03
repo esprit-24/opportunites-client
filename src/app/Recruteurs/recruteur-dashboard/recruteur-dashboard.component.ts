@@ -10,6 +10,6 @@ export class RecruteurDashboardComponent {
   constructor(private router: Router) {}
 
   allerAjouterOffre() {
-    this.router.navigate(['/recruteur/ajouter-offre']);
+    this.router.navigate(['/recruteur/ajout-offre']);
   }
 }

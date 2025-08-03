@@ -1,0 +1,24 @@
+<h2>Mon Profil Recruteur</h2>
+
+<form (ngSubmit)="enregistrer()" #profilForm="ngForm">
+  <label>
+    Nom :
+    <input [(ngModel)]="profil.nom" name="nom" required />
+  </label><br />
+
+  <label>
+    Email :
+    <input [(ngModel)]="profil.email" name="email" type="email" required />
+  </label><br />
+
+  <label>
+    Téléphone :
+    <input [(ngModel)]="profil.telephone" name="telephone" required />
+  </label><br />
+
+  <button type="submit">Enregistrer</button>
+</form>
+
+<hr />
+
+<pre>{{ profil | json }}</pre>
