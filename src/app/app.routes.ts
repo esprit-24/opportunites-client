@@ -25,4 +25,4 @@ export const routes: Routes = [
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
     { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
-   ];
+];

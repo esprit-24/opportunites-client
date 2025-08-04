@@ -29,7 +29,6 @@ export class AccueilComponent implements OnInit {
 
 
   constructor(
-    private jobService: JobService,
     private authService: AuthService,
     private router: Router
   ) {}

@@ -44,7 +44,7 @@ export class LoginComponent {
 
         if (roles.includes('ROLE_ADMIN')) {
           this.router.navigate(['/admin']);
-        } else if (roles.includes('ROLE_USER')) {
+        } else if (roles.includes('ROLE_CANDIDAT')) {
           this.router.navigate(['/candidat']); // Page candidat
         } else if (roles.includes('ROLE_RECRUTEUR')) {
           this.router.navigate(['/recruteur']);

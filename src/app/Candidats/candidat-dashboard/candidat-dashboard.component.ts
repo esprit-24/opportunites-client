@@ -27,7 +27,7 @@ export class CandidatDashboardComponent implements OnInit {
 
     });
 
-    this.villeService.getVilles().subscribe(villes => {
+    this.villeService.getAllVilles().subscribe(villes => {
       this.villes = villes.filter(ville => ville.departement !== undefined) as Ville[];
     });
   }

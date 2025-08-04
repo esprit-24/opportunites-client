@@ -8,7 +8,7 @@ export const candidatGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const roles = authService.getUserRoles();
 
-  if (roles.includes('ROLE_USER')) {
+  if (roles.includes('ROLE_CANDIDAT')) {
     return true;
   } else {
     router.navigate(['/']);
