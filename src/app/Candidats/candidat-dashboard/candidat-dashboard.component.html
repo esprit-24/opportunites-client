@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-            <a class="nav-link" href="/candidat#accueil">Accueil</a>
+            <a class="nav-link" href="#accueil">Accueil</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="/candidat#emplois">Emplois</a>
@@ -22,10 +22,11 @@
             <a class="nav-link" href="/candidat#contact">Contact</a>
             </li>
             <li class="nav-item ms-2">
-              <button class="btn btn-danger-custom" (click)="logout()">
+              <a class="btn btn-danger-custom" href="#" (click)="logout($event)">
                 <i class="fas fa-sign-out-alt me-1"></i> Se déconnecter
-              </button>
+              </a>
             </li>
+
         </ul>
         </div>
     </div>
@@ -42,14 +43,6 @@
             La première plateforme dédiée aux opportunités d'emploi pour les jeunes sénégalais.
             Connectez-vous avec les meilleurs employeurs du pays.
           </p>
-          <div class="d-flex flex-wrap gap-3">
-            <button class="btn btn-primary-custom">
-              <i class="fas fa-search me-2"></i>Chercher un emploi
-            </button>
-            <button class="btn btn-secondary-custom">
-              <i class="fas fa-upload me-2"></i>Déposer mon CV
-            </button>
-          </div>
         </div>
       </div>
       <div class="col-lg-4 text-center">
@@ -72,20 +65,21 @@
         <div class="col-md-6 col-lg-3">
           <label class="form-label">Domaine</label>
           <select class="form-select form-control-custom">
-            <option value="">Tous les domaines</option>
+            <option value="" disabled selected>Choisissez un domaine</option>
+            <option *ngFor="let domaine of domaines" [value]="domaine.id">{{ domaine.intitule }}</option>
           </select>
         </div>
         <div class="col-md-6 col-lg-3">
-          <label class="form-label">Type de contrat</label>
-           <select class="form-select form-control-custom">
-             <option value="">Tous les contrats</option>
-              <option *ngFor="let type of contratOptions" [value]="type">{{ type }}</option>
-           </select>
+          <label class="form-label">Type Contrat</label>
+          <select class="form-select form-control-custom">
+            <option value="" disabled selected>Choisissez un type contrat</option>
+            <option *ngFor="let typeContrat of typeContrats" [value]="typeContrat">{{ typeContrat }}</option>
+          </select>
         </div>
         <div class="col-md-6 col-lg-3">
           <label class="form-label">Ville</label>
           <select class="form-select form-control-custom">
-            <option value="">Toutes les villes</option>
+            <option value="" disabled selected>Choisissez une ville</option>
             <option *ngFor="let ville of villes" [value]="ville.id">{{ ville.nom }}</option>
           </select>
         </div>

@@ -3,11 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Ville } from '../models/ville.model';
 
-
 @Injectable({
   providedIn: 'root'
 })
-
 
 export class VilleService {
 
@@ -18,6 +16,5 @@ export class VilleService {
   getAllVilles(): Observable<Ville[]> {
     return this.http.get<Ville[]>(this.apiUrl);
   }
-
 
 }

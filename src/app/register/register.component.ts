@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { RegisterService } from '../services/register.service';
 import { NiveauEtude } from '../models/enums.model';
 import { Profil } from '../models/profil.model';
@@ -33,8 +32,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private registerService: RegisterService,
-    private profilsService: ProfilsService,
-    private router: Router
+    private profilsService: ProfilsService
   ) {
 
     this.niveauxEtude = Object.values(this.NiveauEtude);

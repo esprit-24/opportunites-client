@@ -23,22 +23,6 @@
   transform: translateY(-2px);
 }
 
-.btn-danger-custom {
-  background-color: #dc3545; /* Rouge Bootstrap */
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  font-size: 0.875rem;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.btn-danger-custom:hover {
-  background-color: #c82333;
-  color: #fff;
-}
-
-
 /* Hero Section */
 .hero-section {
   background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
@@ -240,4 +224,23 @@
 
 .footer-divider {
   border-color: #495057;
+}
+
+.btn-danger-custom {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3);
+}
+
+.btn-danger-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.4);
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
 }
