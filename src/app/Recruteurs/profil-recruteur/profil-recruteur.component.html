@@ -1,24 +1,27 @@
-<h2>Mon Profil Recruteur</h2>
+<nav class="navbar navbar-expand-lg navbar-dark p-3 rounded mb-4"
+     style="background-color: #07a311;">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
 
-<form (ngSubmit)="enregistrer()" #profilForm="ngForm">
-  <label>
-    Nom :
-    <input [(ngModel)]="profil.nom" name="nom" required />
-  </label><br />
+    <!-- Gauche : Photo + infos -->
+    <div class="d-flex align-items-center">
+      <!-- Photo de profil -->
+      <img src="https://via.placeholder.com/60"
+           class="rounded-circle me-3"
+           alt="Photo de profil"
+           width="60" height="60" />
 
-  <label>
-    Email :
-    <input [(ngModel)]="profil.email" name="email" type="email" required />
-  </label><br />
+      <!-- Infos : Prénom, nom, titre -->
+      <div class="text-white">
+        <div class="fw-bold fs-5">{{ profil.nom }}</div>
+        <div class="fst-italic">{{ profil.titre }}</div>
+      </div>
+    </div>
 
-  <label>
-    Téléphone :
-    <input [(ngModel)]="profil.telephone" name="telephone" required />
-  </label><br />
-
-  <button type="submit">Enregistrer</button>
-</form>
-
-<hr />
-
-<pre>{{ profil | json }}</pre>
+    <!-- Droite : Boutons -->
+    <div>
+      <button class="btn btn-outline-light me-2">Modifier</button>
+      <button class="btn btn-outline-light">Déconnexion</button>
+    </div>
+  </div>
+</nav>
+<app-recruteur-dashboard></app-recruteur-dashboard>

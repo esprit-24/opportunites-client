@@ -6,6 +6,8 @@ import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candi
 import { RecruteurDashboardComponent } from './Recruteurs/recruteur-dashboard/recruteur-dashboard.component';
 import { AjoutOffreComponent  }  from './Recruteurs/ajout-offre/ajout-offre.component';
 import { ProfilRecruteurComponent } from './Recruteurs/profil-recruteur/profil-recruteur.component';
+import { CandidaturesComponent } from './Recruteurs/candidatures/candidatures.component';
+import { CandidatureDetailComponent } from './Recruteurs/candidature-detail/candidature-detail.component';
 
 import { RegisterComponent } from './register/register.component';
 import { adminGuard } from './guards/admin.guard';
@@ -21,5 +23,7 @@ export const routes: Routes = [
     { path: 'recruteur', component: ProfilRecruteurComponent, },
     {path: 'recruteur/dashboard', component: RecruteurDashboardComponent,  },
     { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
+    { path: 'recruteur/candidatures', component: CandidaturesComponent },
+    { path: 'recruteur/candidatures/candidature-details/:email', component: CandidatureDetailComponent }
 
    ];
