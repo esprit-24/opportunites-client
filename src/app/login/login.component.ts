@@ -38,7 +38,7 @@ export class LoginComponent {
       next: (response) => {
         this.authService.saveToken(response.id_token);
         this.errorMessage = null;
-        
+
 
         const roles = this.authService.getUserRoles();
 

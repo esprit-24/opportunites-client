@@ -23,7 +23,11 @@ export const routes: Routes = [
     { path: 'recruteur', component: ProfilRecruteurComponent, },
     {path: 'recruteur/dashboard', component: RecruteurDashboardComponent,  },
     { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
+<<<<<<< HEAD
     { path: 'recruteur/candidatures', component: CandidaturesComponent },
     { path: 'recruteur/candidatures/candidature-details/:email', component: CandidatureDetailComponent }
 
    ];
+=======
+];
+>>>>>>> dd0b6ab44f7b815fcbce2eea8093beb627bd3c06

@@ -44,6 +44,7 @@ export class UserManagementComponent implements OnInit {
   // Méthode pour afficher les détails d'un utilisateurselectedUser?: User;
 detailsUser(user: User): void {
   this.selectedUser = user;
+  console.log('Détails de l\'utilisateur:', user);
   //const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
   //modal.show();
 }
