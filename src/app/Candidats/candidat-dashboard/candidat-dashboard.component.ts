@@ -57,7 +57,7 @@ export class CandidatDashboardComponent implements OnInit {
     });
   }
 
-  // Récupération des domaines
+    // Récupération des domaines
     getDomaines(): void {
       this.domaineService.getAllDomaines().subscribe({
         next: (domaines: Domaine[]) => {

@@ -16,6 +16,6 @@ export class ProfilsService {
 
   // Récupérer tous les profils
   getAllProfils(): Observable<Profil[]> {
-    return this.http.get<Profil[]>(this.apiUrl);
+    return this.http.get<Profil[]>(`${this.apiUrl}`);
   }
 }

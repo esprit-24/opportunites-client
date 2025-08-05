@@ -13,6 +13,6 @@ export class DomaineService {
   constructor(private http: HttpClient) { }
 
   getAllDomaines(): Observable<Domaine[]> {
-    return this.http.get<Domaine[]>(this.apiUrl);
+    return this.http.get<Domaine[]>(`${this.apiUrl}`);
   }
 }

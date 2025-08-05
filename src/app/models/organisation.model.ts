@@ -4,11 +4,11 @@ export interface Organisation {
     id: number;
     nom: string;
     presentation: string;
-    secteurActivite: string;
-    logoUrl: string;
+    secteurActivite?: string;
+    logoUrl?: string;
     adresse: string;
-    dateWeb: string;
+    siteWeb?: string;
     emailContact: string;
-    telephone: string;
-    ville: Ville;
+    telephone?: string;
+    ville?: Ville;
 }

@@ -20,7 +20,7 @@ export const routes: Routes = [
 
     // Routes protégées par des guards
     { path: 'admin', component: AdminDashboardComponent, children: [
-        { path: 'users', component: UserManagementComponent },
+        { path: 'users', component: UserManagementComponent }
     ] ,canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},

@@ -14,7 +14,7 @@ export class VilleService {
   constructor(private http: HttpClient) { }
 
   getAllVilles(): Observable<Ville[]> {
-    return this.http.get<Ville[]>(this.apiUrl);
+    return this.http.get<Ville[]>(`${this.apiUrl}`);
   }
 
 }
