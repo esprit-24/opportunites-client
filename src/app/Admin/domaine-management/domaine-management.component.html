@@ -1,0 +1,184 @@
+<div class="domaine-management-container">
+  <!-- En-tête avec titre et bouton d'ajout -->
+  <div class="header">
+    <h2>Gestion des Domaines</h2>
+    <button class="btn btn-primary" (click)="openAddModal()" [disabled]="isLoading">
+      <i class="fas fa-plus"></i> Nouveau Domaine
+    </button>
+  </div>
+
+  <!-- Messages d'erreur et de succès -->
+  <div class="messages" *ngIf="errorMessage || successMessage">
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+    <div class="alert alert-success" *ngIf="successMessage">
+      <i class="fas fa-check-circle"></i>
+      {{ successMessage }}
+    </div>
+  </div>
+
+
+  <!-- Barre de recherche et filtres -->
+  <div class="search-container">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        [formControl]="searchControl" 
+        placeholder="Rechercher par intitulé ou description..."
+        class="search-input">
+    </div>
+    
+    <div class="results-info" *ngIf="totalItems > 0">
+      <span>Affichage de {{ startItem }} à {{ endItem }} sur {{ totalItems }} résultat(s)</span>
+    </div>
+  </div>
+
+  <!-- Tableau des domaines -->
+  <div class="table-container">
+    <div class="loading" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Chargement des domaines...</span>
+    </div>
+
+    <div class="no-results" *ngIf="!isLoading && filteredDomaines.length === 0">
+      <i class="fas fa-inbox"></i>
+      <span>Aucun domaine trouvé</span>
+    </div>
+
+    <table class="domaines-table" *ngIf="!isLoading && filteredDomaines.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Intitulé</th>
+          <th>Description</th>
+          <th class="actions-column">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let domaine of filteredDomaines">
+          <td class="id-cell">{{ domaine.id }}</td>
+          <td class="intitule-cell">{{ domaine.intitule }}</td>
+          <td class="description-cell">{{ domaine.description }}</td>
+          <td class="actions-cell">
+            <div class="action-buttons">
+              <button 
+                class="btn btn-sm btn-warning" 
+                (click)="editDomaine(domaine)"
+                title="Modifier">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button 
+                class="btn btn-sm btn-danger" 
+                (click)="deleteDomaine(domaine)"
+                title="Supprimer">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container" *ngIf="totalPages > 1">
+    <div class="pagination-info">
+      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+    </div>
+    
+    <div class="pagination">
+      <button 
+        class="btn btn-pagination" 
+        [disabled]="!hasPreviousPage" 
+        (click)="previousPage()">
+        <i class="fas fa-chevron-left"></i>
+        Précédent
+      </button>
+      
+      <div class="page-numbers">
+        <button 
+          *ngFor="let page of pages" 
+          class="btn btn-page" 
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        class="btn btn-pagination" 
+        [disabled]="!hasNextPage" 
+        (click)="nextPage()">
+        Suivant
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal pour ajout/modification -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ isEditing ? 'Modifier le domaine' : 'Nouveau domaine' }}</h3>
+        <button class="modal-close" (click)="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <form [formGroup]="domaineForm" (ngSubmit)="isEditing ? updateDomaine() : addDomaine()">
+          <div class="form-group">
+            <label for="modal-intitule">Intitulé *</label>
+            <input 
+              type="text" 
+              id="modal-intitule" 
+              formControlName="intitule" 
+              placeholder="Entrez l'intitulé du domaine"
+              class="form-control"
+              [class.error]="domaineForm.get('intitule')?.invalid && domaineForm.get('intitule')?.touched">
+            <div class="error-message" *ngIf="domaineForm.get('intitule')?.invalid && domaineForm.get('intitule')?.touched">
+              <span *ngIf="domaineForm.get('intitule')?.errors?.['required']">L'intitulé est requis</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="modal-description">Description *</label>
+            <textarea 
+              id="modal-description" 
+              formControlName="description" 
+              placeholder="Entrez la description du domaine"
+              class="form-control"
+              rows="4"
+              [class.error]="domaineForm.get('description')?.invalid && domaineForm.get('description')?.touched">
+            </textarea>
+            <div class="error-message" *ngIf="domaineForm.get('description')?.invalid && domaineForm.get('description')?.touched">
+              <span *ngIf="domaineForm.get('description')?.errors?.['required']">La description est requise</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="closeModal()" 
+          [disabled]="isLoading">
+          <i class="fas fa-times"></i>
+          Annuler
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-success" 
+          (click)="isEditing ? updateDomaine() : addDomaine()" 
+          [disabled]="domaineForm.invalid || isLoading">
+          <i class="fas fa-save"></i>
+          {{ isEditing ? 'Modifier' : 'Ajouter' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

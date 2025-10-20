@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -21,13 +21,14 @@ export class AdminDashboardComponent {
   }
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   logout(): void {
     if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
       this.authService.logout();
-      window.location.reload(); // Recharge la page pour mettre à jour l'état de l'interface utilisateur
+      this.router.navigate(['/login']);
     }
   }
 }

@@ -11,6 +11,7 @@ import { candidatGuard } from './guards/candidat.guard';
 import { recruteurGuard } from './guards/recruteur.guard';
 import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candidat-dashboard.component';
 import { UserManagementComponent } from './Admin/user-management/user-management.component';
+import { DomaineManagementComponent } from './Admin/domaine-management/domaine-management.component';
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
@@ -20,7 +21,8 @@ export const routes: Routes = [
 
     // Routes protégées par des guards
     { path: 'admin', component: AdminDashboardComponent, children: [
-        { path: 'users', component: UserManagementComponent }
+        { path: 'users', component: UserManagementComponent },
+        { path: 'domaines', component: DomaineManagementComponent }
     ] ,canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},

@@ -62,7 +62,6 @@ export class CandidatDashboardComponent implements OnInit {
       this.domaineService.getAllDomaines().subscribe({
         next: (domaines: Domaine[]) => {
           this.domaines = domaines;
-          console.log('Domaines récupérés:', this.domaines);
         },
         error: (error) => {
           console.error('Erreur lors de la récupération des domaines:', error);

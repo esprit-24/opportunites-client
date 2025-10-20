@@ -42,6 +42,8 @@ export class LoginComponent {
 
         const roles = this.authService.getUserRoles();
 
+        //console.log("roles", roles);
+
         if (roles.includes('ROLE_ADMIN')) {
           this.router.navigate(['/admin']);
         } else if (roles.includes('ROLE_CANDIDAT')) {
