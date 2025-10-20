@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Domaine } from '../../models/domaine.model';
-import { DomaineService } from '../../services/domaine.service';
+import { Region } from '../../models/region.model';
+import { RegionService } from '../../services/region.service';
 import { CommonModule } from '@angular/common';
 import { FormControl, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-domaine-management',
+  selector: 'app-region-management',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule
   ],
-  templateUrl: './domaine-management.component.html',
-  styleUrl: './domaine-management.component.css'
+  templateUrl: './region-management.component.html',
+  styleUrl: './region-management.component.css'
 })
-export class DomaineManagementComponent implements OnInit {
+export class RegionManagementComponent implements OnInit {
 
-  // Variables pour la gestion des domaines
-  domaines: Domaine[] = [];
-  filteredDomaines: Domaine[] = [];
+  // Variables pour la gestion des régions
+  regions: Region[] = [];
+  filteredRegions: Region[] = [];
   count: number = 0;
 
   // Variables pour la pagination
@@ -33,27 +33,26 @@ export class DomaineManagementComponent implements OnInit {
   searchControl = new FormControl('');
 
   // Variables pour les formulaires
-  domaineForm: FormGroup;
+  regionForm: FormGroup;
   isEditing: boolean = false;
-  editingDomaineId: number | null = null;
+  editingRegionId: number | null = null;
   showModal: boolean = false;
   showDetailModal: boolean = false;
-  selectedDomaine: Domaine | null = null;
+  selectedRegion: Region | null = null;
 
   // Variables pour la gestion des erreurs et états
   isLoading = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor(private domaineService: DomaineService) {
-    this.domaineForm = new FormGroup({
-      intitule: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required])
+  constructor(private regionService: RegionService) {
+    this.regionForm = new FormGroup({
+      nom: new FormControl('', [Validators.required])
     });
   }
 
   ngOnInit(): void {
-    this.loadDomaines();
+    this.loadRegions();
     this.setupSearchSubscription();
   }
 
@@ -62,42 +61,41 @@ export class DomaineManagementComponent implements OnInit {
     this.searchControl.valueChanges.subscribe(term => {
       this.searchTerm = term || '';
       this.currentPage = 1;
-      this.filterAndPaginateDomaines();
+      this.filterAndPaginateRegions();
     });
   }
 
-  // Méthode pour charger tous les domaines
-  loadDomaines(): void {
+  // Méthode pour charger toutes les régions
+  loadRegions(): void {
     this.isLoading = true;
     this.errorMessage = null;
     
-    this.domaineService.getAllDomaines().subscribe({
-      next: (domaines: Domaine[]) => {
-        this.domaines = domaines;
-        this.filterAndPaginateDomaines();
+    this.regionService.getAllRegions().subscribe({
+      next: (regions: Region[]) => {
+        this.regions = regions;
+        this.filterAndPaginateRegions();
         this.isLoading = false;
       },
       error: (error) => {
-        this.errorMessage = 'Erreur lors du chargement des domaines: ' + error.message;
+        this.errorMessage = 'Erreur lors du chargement des régions: ' + error.message;
         this.isLoading = false;
       }
     });
   }
 
-  // Méthode pour filtrer et paginer les domaines
-  filterAndPaginateDomaines(): void {
+  // Méthode pour filtrer et paginer les régions
+  filterAndPaginateRegions(): void {
     // Filtrage
     if (this.searchTerm.trim()) {
-      this.filteredDomaines = this.domaines.filter(domaine =>
-        domaine.intitule.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        domaine.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+      this.filteredRegions = this.regions.filter(region =>
+        region.nom.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
-      this.filteredDomaines = [...this.domaines];
+      this.filteredRegions = [...this.regions];
     }
 
     // Calcul de la pagination
-    this.totalItems = this.filteredDomaines.length;
+    this.totalItems = this.filteredRegions.length;
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
 
     // Ajustement de la page courante si nécessaire
@@ -108,59 +106,57 @@ export class DomaineManagementComponent implements OnInit {
     // Pagination des résultats
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.filteredDomaines = this.filteredDomaines.slice(startIndex, endIndex);
+    this.filteredRegions = this.filteredRegions.slice(startIndex, endIndex);
   }
 
   // Méthodes de pagination
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.filterAndPaginateDomaines();
+      this.filterAndPaginateRegions();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.filterAndPaginateDomaines();
+      this.filterAndPaginateRegions();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.filterAndPaginateDomaines();
+      this.filterAndPaginateRegions();
     }
   }
 
   // Méthodes pour les actions CRUD
-  addDomaine(): void {
-    if (this.domaineForm.valid) {
-      const newDomaine: Omit<Domaine, 'id'> = {
-        intitule: this.domaineForm.value.intitule,
-        description: this.domaineForm.value.description
+  addRegion(): void {
+    if (this.regionForm.valid) {
+      const newRegion: Omit<Region, 'id'> = {
+        nom: this.regionForm.value.nom
       };
 
-      this.domaineService.addDomaine(newDomaine).subscribe({
+      this.regionService.addRegion(newRegion).subscribe({
         next: () => {
-          this.successMessage = 'Domaine ajouté avec succès';
+          this.successMessage = 'Région ajoutée avec succès';
           this.closeModal();
-          this.loadDomaines();
+          this.loadRegions();
           this.clearMessages();
         },
         error: (error) => {
-          this.errorMessage = 'Erreur lors de l\'ajout du domaine: ' + error.message;
+          this.errorMessage = 'Erreur lors de l\'ajout de la région: ' + error.message;
         }
       });
     }
   }
 
-  editDomaine(domaine: Domaine): void {
+  editRegion(region: Region): void {
     this.isEditing = true;
-    this.editingDomaineId = domaine.id;
-    this.domaineForm.patchValue({
-      intitule: domaine.intitule,
-      description: domaine.description
+    this.editingRegionId = region.id;
+    this.regionForm.patchValue({
+      nom: region.nom
     });
     this.showModal = true;
   }
@@ -168,7 +164,7 @@ export class DomaineManagementComponent implements OnInit {
   // Méthodes pour gérer le modal
   openAddModal(): void {
     this.isEditing = false;
-    this.editingDomaineId = null;
+    this.editingRegionId = null;
     this.resetForm();
     this.showModal = true;
   }
@@ -179,48 +175,47 @@ export class DomaineManagementComponent implements OnInit {
   }
 
   // Méthodes pour gérer le modal de détail
-  viewDomaineDetail(domaine: Domaine): void {
-    this.selectedDomaine = domaine;
+  viewRegionDetail(region: Region): void {
+    this.selectedRegion = region;
     this.showDetailModal = true;
   }
 
   closeDetailModal(): void {
     this.showDetailModal = false;
-    this.selectedDomaine = null;
+    this.selectedRegion = null;
   }
 
-  updateDomaine(): void {
-    if (this.domaineForm.valid && this.editingDomaineId) {
-      const updatedDomaine: Domaine = {
-        id: this.editingDomaineId,
-        intitule: this.domaineForm.value.intitule,
-        description: this.domaineForm.value.description
+  updateRegion(): void {
+    if (this.regionForm.valid && this.editingRegionId) {
+      const updatedRegion: Region = {
+        id: this.editingRegionId,
+        nom: this.regionForm.value.nom
       };
 
-      this.domaineService.updateDomaine(this.editingDomaineId, updatedDomaine).subscribe({
+      this.regionService.updateRegion(this.editingRegionId, updatedRegion).subscribe({
         next: () => {
-          this.successMessage = 'Domaine modifié avec succès';
+          this.successMessage = 'Région modifiée avec succès';
           this.closeModal();
-          this.loadDomaines();
+          this.loadRegions();
           this.clearMessages();
         },
         error: (error) => {
-          this.errorMessage = 'Erreur lors de la modification du domaine: ' + error.message;
+          this.errorMessage = 'Erreur lors de la modification de la région: ' + error.message;
         }
       });
     }
   }
 
-  deleteDomaine(domaine: Domaine): void {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer le domaine "${domaine.intitule}" ?`)) {
-      this.domaineService.deleteDomaine(domaine.id).subscribe({
+  deleteRegion(region: Region): void {
+    if (confirm(`Êtes-vous sûr de vouloir supprimer la région "${region.nom}" ?`)) {
+      this.regionService.deleteRegion(region.id).subscribe({
         next: () => {
-          this.successMessage = 'Domaine supprimé avec succès';
-          this.loadDomaines();
+          this.successMessage = 'Région supprimée avec succès';
+          this.loadRegions();
           this.clearMessages();
         },
         error: (error) => {
-          this.errorMessage = 'Erreur lors de la suppression du domaine: ' + error.message;
+          this.errorMessage = 'Erreur lors de la suppression de la région: ' + error.message;
         }
       });
     }
@@ -228,9 +223,9 @@ export class DomaineManagementComponent implements OnInit {
 
   // Méthodes utilitaires
   resetForm(): void {
-    this.domaineForm.reset();
+    this.regionForm.reset();
     this.isEditing = false;
-    this.editingDomaineId = null;
+    this.editingRegionId = null;
   }
 
   clearMessages(): void {

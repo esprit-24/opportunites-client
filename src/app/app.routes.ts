@@ -12,6 +12,7 @@ import { recruteurGuard } from './guards/recruteur.guard';
 import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candidat-dashboard.component';
 import { UserManagementComponent } from './Admin/user-management/user-management.component';
 import { DomaineManagementComponent } from './Admin/domaine-management/domaine-management.component';
+import { RegionManagementComponent } from './Admin/region-management/region-management.component';
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
@@ -22,7 +23,8 @@ export const routes: Routes = [
     // Routes protégées par des guards
     { path: 'admin', component: AdminDashboardComponent, children: [
         { path: 'users', component: UserManagementComponent },
-        { path: 'domaines', component: DomaineManagementComponent }
+        { path: 'domaines', component: DomaineManagementComponent },
+        { path: 'regions', component: RegionManagementComponent }
     ] ,canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},

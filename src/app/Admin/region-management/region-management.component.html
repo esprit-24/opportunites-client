@@ -1,9 +1,9 @@
-<div class="domaine-management-container">
+<div class="region-management-container">
   <!-- En-tête avec titre et bouton d'ajout -->
   <div class="header">
-    <h2>Gestion des Domaines</h2>
+    <h2>Gestion des Régions</h2>
     <button class="btn btn-primary" (click)="openAddModal()" [disabled]="isLoading">
-      <i class="fas fa-plus"></i> Nouveau Domaine
+      <i class="fas fa-plus"></i> Nouvelle Région
     </button>
   </div>
 
@@ -19,7 +19,6 @@
     </div>
   </div>
 
-
   <!-- Barre de recherche et filtres -->
   <div class="search-container">
     <div class="search-box">
@@ -27,7 +26,7 @@
       <input 
         type="text" 
         [formControl]="searchControl" 
-        placeholder="Rechercher par intitulé ou description..."
+        placeholder="Rechercher par nom de région..."
         class="search-input">
     </div>
     
@@ -36,47 +35,45 @@
     </div>
   </div>
 
-  <!-- Tableau des domaines -->
+  <!-- Tableau des régions -->
   <div class="table-container">
     <div class="loading" *ngIf="isLoading">
       <i class="fas fa-spinner fa-spin"></i>
-      <span>Chargement des domaines...</span>
+      <span>Chargement des régions...</span>
     </div>
 
-    <div class="no-results" *ngIf="!isLoading && filteredDomaines.length === 0">
+    <div class="no-results" *ngIf="!isLoading && filteredRegions.length === 0">
       <i class="fas fa-inbox"></i>
-      <span>Aucun domaine trouvé</span>
+      <span>Aucune région trouvée</span>
     </div>
 
-    <table class="domaines-table" *ngIf="!isLoading && filteredDomaines.length > 0">
+    <table class="regions-table" *ngIf="!isLoading && filteredRegions.length > 0">
       <thead>
         <tr>
-          <th>Intitulé</th>
-          <th>Description</th>
+          <th>Nom</th>
           <th class="actions-column">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let domaine of filteredDomaines">
-          <td class="intitule-cell">{{ domaine.intitule }}</td>
-          <td class="description-cell">{{ domaine.description }}</td>
+        <tr *ngFor="let region of filteredRegions">
+          <td class="nom-cell">{{ region.nom }}</td>
           <td class="actions-cell">
             <div class="action-buttons">
               <button 
                 class="btn btn-sm btn-info" 
-                (click)="viewDomaineDetail(domaine)"
+                (click)="viewRegionDetail(region)"
                 title="Voir détail">
                 <i class="fas fa-eye"></i>
               </button>
               <button 
                 class="btn btn-sm btn-warning" 
-                (click)="editDomaine(domaine)"
+                (click)="editRegion(region)"
                 title="Modifier">
                 <i class="fas fa-edit"></i>
               </button>
               <button 
                 class="btn btn-sm btn-danger" 
-                (click)="deleteDomaine(domaine)"
+                (click)="deleteRegion(region)"
                 title="Supprimer">
                 <i class="fas fa-trash"></i>
               </button>
@@ -126,40 +123,25 @@
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>{{ isEditing ? 'Modifier le domaine' : 'Nouveau domaine' }}</h3>
+        <h3>{{ isEditing ? 'Modifier la région' : 'Nouvelle région' }}</h3>
         <button class="modal-close" (click)="closeModal()">
           <i class="fas fa-times"></i>
         </button>
       </div>
       
       <div class="modal-body">
-        <form [formGroup]="domaineForm" (ngSubmit)="isEditing ? updateDomaine() : addDomaine()">
+        <form [formGroup]="regionForm" (ngSubmit)="isEditing ? updateRegion() : addRegion()">
           <div class="form-group">
-            <label for="modal-intitule">Intitulé *</label>
+            <label for="modal-nom">Nom *</label>
             <input 
               type="text" 
-              id="modal-intitule" 
-              formControlName="intitule" 
-              placeholder="Entrez l'intitulé du domaine"
+              id="modal-nom" 
+              formControlName="nom" 
+              placeholder="Entrez le nom de la région"
               class="form-control"
-              [class.error]="domaineForm.get('intitule')?.invalid && domaineForm.get('intitule')?.touched">
-            <div class="error-message" *ngIf="domaineForm.get('intitule')?.invalid && domaineForm.get('intitule')?.touched">
-              <span *ngIf="domaineForm.get('intitule')?.errors?.['required']">L'intitulé est requis</span>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="modal-description">Description *</label>
-            <textarea 
-              id="modal-description" 
-              formControlName="description" 
-              placeholder="Entrez la description du domaine"
-              class="form-control"
-              rows="4"
-              [class.error]="domaineForm.get('description')?.invalid && domaineForm.get('description')?.touched">
-            </textarea>
-            <div class="error-message" *ngIf="domaineForm.get('description')?.invalid && domaineForm.get('description')?.touched">
-              <span *ngIf="domaineForm.get('description')?.errors?.['required']">La description est requise</span>
+              [class.error]="regionForm.get('nom')?.invalid && regionForm.get('nom')?.touched">
+            <div class="error-message" *ngIf="regionForm.get('nom')?.invalid && regionForm.get('nom')?.touched">
+              <span *ngIf="regionForm.get('nom')?.errors?.['required']">Le nom est requis</span>
             </div>
           </div>
         </form>
@@ -177,8 +159,8 @@
         <button 
           type="button" 
           class="btn btn-success" 
-          (click)="isEditing ? updateDomaine() : addDomaine()" 
-          [disabled]="domaineForm.invalid || isLoading">
+          (click)="isEditing ? updateRegion() : addRegion()" 
+          [disabled]="regionForm.invalid || isLoading">
           <i class="fas fa-save"></i>
           {{ isEditing ? 'Modifier' : 'Ajouter' }}
         </button>
@@ -190,25 +172,21 @@
   <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
     <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Détails du domaine</h3>
+        <h3>Détails de la région</h3>
         <button class="modal-close" (click)="closeDetailModal()">
           <i class="fas fa-times"></i>
         </button>
       </div>
       
-      <div class="modal-body" *ngIf="selectedDomaine">
+      <div class="modal-body" *ngIf="selectedRegion">
         <div class="detail-content">
           <div class="detail-item">
             <label>ID :</label>
-            <span class="detail-value">{{ selectedDomaine.id }}</span>
+            <span class="detail-value">{{ selectedRegion.id }}</span>
           </div>
           <div class="detail-item">
-            <label>Intitulé :</label>
-            <span class="detail-value">{{ selectedDomaine.intitule }}</span>
-          </div>
-          <div class="detail-item">
-            <label>Description :</label>
-            <span class="detail-value">{{ selectedDomaine.description }}</span>
+            <label>Nom :</label>
+            <span class="detail-value">{{ selectedRegion.nom }}</span>
           </div>
         </div>
       </div>
