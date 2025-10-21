@@ -13,6 +13,8 @@ import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candi
 import { UserManagementComponent } from './Admin/user-management/user-management.component';
 import { DomaineManagementComponent } from './Admin/domaine-management/domaine-management.component';
 import { RegionManagementComponent } from './Admin/region-management/region-management.component';
+import { CandidaturesComponent } from './Recruteurs/candidatures/candidatures.component';
+import { CandidatureDetailComponent } from './Recruteurs/candidature-detail/candidature-detail.component';
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
@@ -27,6 +29,8 @@ export const routes: Routes = [
         { path: 'regions', component: RegionManagementComponent }
     ] ,canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
-    { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
-    { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
+    { path: 'recruteur', component: RecruteurDashboardComponent},
+    { path: 'recruteur/ajout-offre', component: AjoutOffreComponent},
+    { path: 'recruteur/candidatures', component: CandidaturesComponent},
+    { path: 'recruteur/candidature/candidature-details/:email', component: CandidatureDetailComponent}
 ];

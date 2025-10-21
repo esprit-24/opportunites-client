@@ -11,11 +11,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CandidatureDetailComponent {
   candidatureId: number;
+  candidaturenom: string;
+  candidatureemail: string;
+  candidatureposte:string;
+  dateSoumission:Date;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.candidatureId = Number(this.route.snapshot.paramMap.get('id'));
     // Tu peux ici charger les détails depuis un service en fonction de l’id
-  }
+    this.candidaturenom= String( this.route.snapshot.paramMap.get('nom'));
+    this.candidatureemail= String( this.route.snapshot.paramMap.get('email'));
+    this.candidatureposte= String( this.route.snapshot.paramMap.get('poste'));
+    this.dateSoumission= new Date( String( this.route.snapshot.paramMap.get('dateSoumission')));
+    }
 
   validerCandidature() {
     alert('Candidature validée !');

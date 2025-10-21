@@ -2,10 +2,10 @@
   <h2 class="text-success mb-4">Détail de la candidature #{{ candidatureId }}</h2>
 
   <div class="card shadow-sm p-4">
-    <p><strong>Nom :</strong> Ali Diop</p>
-    <p><strong>Email :</strong> ali&#64;example.com</p>
-    <p><strong>Poste :</strong> Développeur</p>
-    <p><strong>Date de soumission :</strong> 2025-08-04</p>
+    <p><strong>Nom :</strong>{{ candidaturenom}}</p>
+    <p><strong>Email :</strong>{{candidatureemail}} </p>
+    <p><strong>Poste :</strong>{{candidatureposte}} </p>
+    <p><strong>Date de soumission :</strong>{{dateSoumission}} </p>
 
     <div class="mt-4 d-flex gap-3">
       <button class="btn btn-success" (click)="validerCandidature()">Valider</button>
