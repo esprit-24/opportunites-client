@@ -13,6 +13,8 @@ import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candi
 import { UserManagementComponent } from './Admin/user-management/user-management.component';
 import { DomaineManagementComponent } from './Admin/domaine-management/domaine-management.component';
 import { RegionManagementComponent } from './Admin/region-management/region-management.component';
+import { DepartementManagementComponent } from './Admin/departement-management/departement-management.component';
+import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
@@ -24,7 +26,9 @@ export const routes: Routes = [
     { path: 'admin', component: AdminDashboardComponent, children: [
         { path: 'users', component: UserManagementComponent },
         { path: 'domaines', component: DomaineManagementComponent },
-        { path: 'regions', component: RegionManagementComponent }
+        { path: 'regions', component: RegionManagementComponent },
+        { path: 'departements', component: DepartementManagementComponent },
+        { path: 'villes', component: VilleManagementComponent }
     ] ,canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},

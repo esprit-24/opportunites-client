@@ -1,0 +1,232 @@
+<div class="ville-management-container">
+  <!-- En-tête avec titre et bouton d'ajout -->
+  <div class="header">
+    <h2>Gestion des Villes</h2>
+    <button class="btn btn-primary" (click)="openAddModal()" [disabled]="isLoading">
+      <i class="fas fa-plus"></i> Nouvelle Ville
+    </button>
+  </div>
+
+  <!-- Messages d'erreur et de succès -->
+  <div class="messages" *ngIf="errorMessage || successMessage">
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+    <div class="alert alert-success" *ngIf="successMessage">
+      <i class="fas fa-check-circle"></i>
+      {{ successMessage }}
+    </div>
+  </div>
+
+  <!-- Barre de recherche et filtres -->
+  <div class="search-container">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        [formControl]="searchControl" 
+        placeholder="Rechercher par nom de ville, département ou région..."
+        class="search-input">
+    </div>
+    
+    <div class="results-info" *ngIf="totalItems > 0">
+      <span>Affichage de {{ startItem }} à {{ endItem }} sur {{ totalItems }} résultat(s)</span>
+    </div>
+  </div>
+
+  <!-- Tableau des villes -->
+  <div class="table-container">
+    <div class="loading" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Chargement des villes...</span>
+    </div>
+
+    <div class="no-results" *ngIf="!isLoading && filteredVilles.length === 0">
+      <i class="fas fa-inbox"></i>
+      <span>Aucune ville trouvée</span>
+    </div>
+
+    <table class="villes-table" *ngIf="!isLoading && filteredVilles.length > 0">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Département</th>
+          <th class="actions-column">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ville of filteredVilles">
+          <td class="nom-cell">{{ ville.nom }}</td>
+          <td class="departement-cell">{{ ville.departement.nom }}</td>
+          <td class="actions-cell">
+            <div class="action-buttons">
+              <button 
+                class="btn btn-sm btn-info" 
+                (click)="viewVilleDetail(ville)"
+                title="Voir détail">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button 
+                class="btn btn-sm btn-warning" 
+                (click)="editVille(ville)"
+                title="Modifier">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button 
+                class="btn btn-sm btn-danger" 
+                (click)="deleteVille(ville)"
+                title="Supprimer">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container" *ngIf="totalPages > 1">
+    <div class="pagination-info">
+      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+    </div>
+    
+    <div class="pagination">
+      <button 
+        class="btn btn-pagination" 
+        [disabled]="!hasPreviousPage" 
+        (click)="previousPage()">
+        <i class="fas fa-chevron-left"></i>
+        Précédent
+      </button>
+      
+      <div class="page-numbers">
+        <button 
+          *ngFor="let page of pages" 
+          class="btn btn-page" 
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        class="btn btn-pagination" 
+        [disabled]="!hasNextPage" 
+        (click)="nextPage()">
+        Suivant
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal pour ajout/modification -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ isEditing ? 'Modifier la ville' : 'Nouvelle ville' }}</h3>
+        <button class="modal-close" (click)="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <form [formGroup]="villeForm" (ngSubmit)="isEditing ? updateVille() : addVille()">
+          <div class="form-group">
+            <label for="modal-nom">Nom *</label>
+            <input 
+              type="text" 
+              id="modal-nom" 
+              formControlName="nom" 
+              placeholder="Entrez le nom de la ville"
+              class="form-control"
+              [class.error]="villeForm.get('nom')?.invalid && villeForm.get('nom')?.touched">
+            <div class="error-message" *ngIf="villeForm.get('nom')?.invalid && villeForm.get('nom')?.touched">
+              <span *ngIf="villeForm.get('nom')?.errors?.['required']">Le nom est requis</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="modal-departement">Département *</label>
+            <select 
+              id="modal-departement" 
+              formControlName="departementId" 
+              class="form-control"
+              [class.error]="villeForm.get('departementId')?.invalid && villeForm.get('departementId')?.touched">
+              <option value="">Sélectionnez un département</option>
+              <option *ngFor="let departement of departements" [value]="departement.id">
+                {{ departement.nom }} ({{ departement.region.nom }})
+              </option>
+            </select>
+            <div class="error-message" *ngIf="villeForm.get('departementId')?.invalid && villeForm.get('departementId')?.touched">
+              <span *ngIf="villeForm.get('departementId')?.errors?.['required']">Le département est requis</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="closeModal()" 
+          [disabled]="isLoading">
+          <i class="fas fa-times"></i>
+          Annuler
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-success" 
+          (click)="isEditing ? updateVille() : addVille()" 
+          [disabled]="villeForm.invalid || isLoading">
+          <i class="fas fa-save"></i>
+          {{ isEditing ? 'Modifier' : 'Ajouter' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour voir les détails -->
+  <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
+    <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Détails de la ville</h3>
+        <button class="modal-close" (click)="closeDetailModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body" *ngIf="selectedVille">
+        <div class="detail-content">
+          <div class="detail-item">
+            <label>ID :</label>
+            <span class="detail-value">{{ selectedVille.id }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Nom :</label>
+            <span class="detail-value">{{ selectedVille.nom }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Département :</label>
+            <span class="detail-value">{{ selectedVille.departement.nom }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Région :</label>
+            <span class="detail-value">{{ selectedVille.departement.region.nom }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="closeDetailModal()">
+          <i class="fas fa-times"></i>
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
