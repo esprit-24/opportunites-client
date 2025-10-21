@@ -39,13 +39,13 @@ export class RegisterComponent implements OnInit {
 
     this.registerForm = this.fb.group({
       login: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
       firstName: [''],
       lastName: [''],
       dateNaissance: [null],
-      niveauEtude: [''],
+      niveauEtude: ['', [Validators.required]],
       statutActuel: [''],
       cvUrl: [''],
       profilId: [null, [Validators.required]],
@@ -109,6 +109,10 @@ export class RegisterComponent implements OnInit {
         this.errorMessage = 'Erreur lors de l’inscription.';
       }
     });
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+    
   }
 
   // Récupérer les profils
