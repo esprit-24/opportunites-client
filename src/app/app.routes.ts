@@ -16,6 +16,7 @@ import { RegionManagementComponent } from './Admin/region-management/region-mana
 import { DepartementManagementComponent } from './Admin/departement-management/departement-management.component';
 import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
 import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
+import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
 
     // Routes protégées par des guards
+    
     { path: 'admin', component: AdminDashboardComponent, children: [
         { path: 'users', component: UserManagementComponent },
         { path: 'domaines', component: DomaineManagementComponent },
@@ -32,7 +34,7 @@ export const routes: Routes = [
         { path: 'villes', component: VilleManagementComponent },
         { path: 'organisations', component: OrganisationManagementComponent }
     ] ,canActivate: [adminGuard] },
+    { path: 'register-recruteur', component: RegisterRecruteurComponent, canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
-    { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
 ];

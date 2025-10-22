@@ -5,6 +5,7 @@ import { RegisterService } from '../services/register.service';
 import { NiveauEtude } from '../models/enums.model';
 import { Profil } from '../models/profil.model';
 import { ProfilsService } from '../services/profils.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -32,7 +33,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private registerService: RegisterService,
-    private profilsService: ProfilsService
+    private profilsService: ProfilsService,
+    private router: Router
   ) {
 
     this.niveauxEtude = Object.values(this.NiveauEtude);
@@ -98,20 +100,19 @@ export class RegisterComponent implements OnInit {
     // Ajouter le fichier CV
     formData.append('cvUrl', this.selectedFile);
 
-    this.registerService.register(formData).subscribe({
+    this.registerService.registerCandidat(formData).subscribe({
       next: () => {
         this.successMessage = 'Inscription réussie. En attente d’activation.';
         this.errorMessage = null;
         this.registerForm.reset();
+
+        this.router.navigate(['/login']);
       },
       error: () => {
         this.successMessage = null;
         this.errorMessage = 'Erreur lors de l’inscription.';
       }
     });
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
     
   }
 
@@ -144,6 +145,5 @@ export class RegisterComponent implements OnInit {
       this.selectedFile = null;
     }
   }
-
 
 }
