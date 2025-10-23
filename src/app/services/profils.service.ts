@@ -7,6 +7,12 @@ import { Profil } from '../models/profil.model';
   providedIn: 'root'
 })
 export class ProfilsService {
+  updateProfil(profil: any) {
+    throw new Error('Method not implemented.');
+  }
+  getProfil(): any {
+    throw new Error('Method not implemented.');
+  }
 
   private apiUrl = 'http://localhost:9090/api/profils';
 

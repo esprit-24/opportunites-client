@@ -18,4 +18,6 @@ export class RecruteurDashboardComponent {
   voirCandidatures() {
     this.router.navigate(['/recruteur/candidatures']);
   }
+
+  
 }

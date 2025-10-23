@@ -13,11 +13,13 @@ import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candi
 import { UserManagementComponent } from './Admin/user-management/user-management.component';
 import { DomaineManagementComponent } from './Admin/domaine-management/domaine-management.component';
 import { RegionManagementComponent } from './Admin/region-management/region-management.component';
+
 import { DepartementManagementComponent } from './Admin/departement-management/departement-management.component';
 import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
 import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
 import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
 import { OpportuniteManagementComponent } from './Admin/opportunite-management/opportunite-management.component';
+
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
@@ -39,4 +41,5 @@ export const routes: Routes = [
     { path: 'register-recruteur', component: RegisterRecruteurComponent, canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
+    { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
 ];
