@@ -18,11 +18,9 @@ import { DepartementManagementComponent } from './Admin/departement-management/d
 import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
 import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
 import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
-<<<<<<<<< Temporary merge branch 1
 import { OpportuniteManagementComponent } from './Admin/opportunite-management/opportunite-management.component';
-=========
-import { ToutesOpportunitesComponent } from './opportunites/toutes-opportunites/toutes-opportunites.component';
->>>>>>>>> Temporary merge branch 2
+import { ListeOpportunitesComponent } from './liste-opportunites/liste-opportunites.component';
+
 
 
 export const routes: Routes = [
@@ -30,7 +28,6 @@ export const routes: Routes = [
     { path: 'accueil', component: AccueilComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'toutes-opportunites', component: ToutesOpportunitesComponent },
 
     // Routes protégées par des guards
 
@@ -41,10 +38,13 @@ export const routes: Routes = [
         { path: 'departements', component: DepartementManagementComponent },
         { path: 'villes', component: VilleManagementComponent },
         { path: 'organisations', component: OrganisationManagementComponent },
-        { path: 'opportunites', component: OpportuniteManagementComponent}
-    ] ,canActivate: [adminGuard] },
+        { path: 'opportunites', component: OpportuniteManagementComponent }
+    ], canActivate: [adminGuard] },
     { path: 'register-recruteur', component: RegisterRecruteurComponent, canActivate: [adminGuard] },
+
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
+    { path: 'liste-opportunites', component: ListeOpportunitesComponent, canActivate: [candidatGuard]},
+
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
     { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
 ];

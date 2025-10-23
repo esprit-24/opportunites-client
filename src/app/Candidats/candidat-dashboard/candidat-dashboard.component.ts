@@ -84,36 +84,21 @@ export class CandidatDashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-   // Filtrage des opportunités
-    loadOpportunites(): void {
-      this.opportuniteService.getAllOpportunites().subscribe({
-        next: (data: Opportunite[]) => {
-          this.opportunites = data.slice(0, 2); // Afficher seulement les 3 premières opportunités
-        },
+  
+  loadOpportunites(): void {
+    this.opportuniteService.getAllOpportunites().subscribe({
+      next: (data: Opportunite[]) => {
+        // Filtrer pour ne garder que les opportunités actives
+        const actives = data.filter(o => o.statut === 'ACTIVE');
 
-        error: (error: any) => {
-          console.error('Erreur lors de la récupération des opportunités:', error);
-        }
-      });
-    }
+        this.opportunites = actives.slice(0, 2);
+      },
 
-    voirPlus(offre: any): void {
-     offre.showFullDescription = !offre.showFullDescription;
+      error: (error: any) => {
+        console.error('Erreur lors de la récupération des opportunités:', error);
+      }
+    });
   }
 
-showToast = false;
-toastOffreTitre = '';
-
-postuler(offre: Opportunite): void {
-  this.toastOffreTitre = offre.titre;
-  this.showToast = true;
-
-  setTimeout(() => {
-    this.showToast = false;
-  }, 3000); // masque le toast après 3 secondes
-}
-
-
-
-
+    
 }

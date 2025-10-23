@@ -4,11 +4,7 @@ import { Ville } from './ville.model';
 import { NiveauEtude, TypeContrat, Statut } from './enums.model';
 
 export interface Opportunite {
-<<<<<<< HEAD
-    id?: number;
-=======
     id: number;
->>>>>>> 7ec9e45d586a8a6253e963dfac2aae135fcfcd9f
     titre: string;
     description: string;
     dateDebut: string;
