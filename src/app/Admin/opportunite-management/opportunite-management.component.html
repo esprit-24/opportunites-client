@@ -1,0 +1,271 @@
+<div class="opportunite-management-container">
+    <!-- En-tête -->
+    <div class="header">
+      <h2>Gestion des Opportunités</h2>
+      <button class="btn btn-primary" (click)="openAddModal()" [disabled]="isLoading">
+        <i class="fas fa-plus"></i> Nouvelle Opportunité
+      </button>
+    </div>
+  
+    <!-- Messages -->
+    <div class="messages" *ngIf="errorMessage || successMessage">
+      <div class="alert alert-error" *ngIf="errorMessage">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ errorMessage }}
+      </div>
+      <div class="alert alert-success" *ngIf="successMessage">
+        <i class="fas fa-check-circle"></i>
+        {{ successMessage }}
+      </div>
+    </div>
+  
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input 
+          type="text" 
+          [formControl]="searchControl" 
+          placeholder="Rechercher par titre ou organisation..."
+          class="search-input">
+      </div>
+      <div class="results-info" *ngIf="totalItems > 0">
+        <span>Affichage de {{ startItem }} à {{ endItem }} sur {{ totalItems }} résultat(s)</span>
+      </div>
+    </div>
+  
+    <!-- Tableau des opportunités -->
+    <div class="table-container">
+      <div class="loading" *ngIf="isLoading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Chargement des opportunités...</span>
+      </div>
+  
+      <div class="no-results" *ngIf="!isLoading && filteredOpportunites.length === 0">
+        <i class="fas fa-inbox"></i>
+        <span>Aucune opportunité trouvée</span>
+      </div>
+  
+      <table class="opportunites-table" *ngIf="!isLoading && filteredOpportunites.length > 0">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Type Contrat</th>
+            <th>Organisation</th>
+            <th>Domaine</th>
+            <th>Ville</th>
+            <th>Date Début</th>
+            <th>Date Fin</th>
+            <th>Statut</th>
+            <th class="actions-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let opp of filteredOpportunites">
+            <td class="opp-cell">{{ opp.titre }}</td>
+            <td class="opp-cell">{{ opp.typeContrat || '—' }}</td>
+            <td class="opp-cell">{{ opp.organisation?.nom || '—' }}</td>
+            <td class="opp-cell">{{ opp.domaine?.intitule || '—' }}</td>
+            <td class="opp-cell">{{ opp.ville?.nom || '—' }}</td>
+            <td class="opp-cell">{{ opp.dateDebut | date:'dd/MM/yyyy' }}</td>
+            <td class="opp-cell">{{ opp.dateFin ? (opp.dateFin | date:'dd/MM/yyyy') : '—' }}</td>
+            <td class="opp-cell">
+              <span [ngClass]="{
+                'badge bg-success': opp.statut === 'ACTIVE',
+                'badge bg-warning': opp.statut === 'POURVUE',
+                'badge bg-danger': opp.statut === 'EXPIREE'
+              }">
+                {{ opp.statut }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-info" (click)="viewOpportuniteDetail(opp)" title="Détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-warning" (click)="editOpportunite(opp)" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="deleteOpportunite(opp)" title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination-info">
+        <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+      </div>
+      <div class="pagination">
+        <button class="btn btn-pagination" [disabled]="!hasPreviousPage" (click)="previousPage()">
+          <i class="fas fa-chevron-left"></i> Précédent
+        </button>
+        <div class="page-numbers">
+          <button *ngFor="let page of pages" class="btn btn-page" [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        </div>
+        <button class="btn btn-pagination" [disabled]="!hasNextPage" (click)="nextPage()">
+          Suivant <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Modal Ajout/Modification -->
+    <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ isEditing ? 'Modifier l\'opportunité' : 'Nouvelle opportunité' }}</h3>
+          <button class="modal-close" (click)="closeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="opportuniteForm" (ngSubmit)="isEditing ? updateOpportunite() : addOpportunite()">
+  
+            <div class="form-group">
+              <label>Titre *</label>
+              <input type="text" formControlName="titre" placeholder="Titre de l'opportunité" class="form-control"
+                [class.error]="opportuniteForm.get('titre')?.invalid && opportuniteForm.get('titre')?.touched">
+            </div>
+  
+            <div class="form-group">
+              <label>Description *</label>
+              <textarea formControlName="description" rows="3" placeholder="Description de l'opportunité"
+                class="form-control"
+                [class.error]="opportuniteForm.get('description')?.invalid && opportuniteForm.get('description')?.touched"></textarea>
+            </div>
+  
+            <div class="form-group">
+              <label>Date Début *</label>
+              <input type="date" formControlName="dateDebut" class="form-control"
+                [class.error]="opportuniteForm.get('dateDebut')?.invalid && opportuniteForm.get('dateDebut')?.touched">
+            </div>
+  
+            <div class="form-group">
+              <label>Date Fin</label>
+              <input type="date" formControlName="dateFin" class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label>Adresse</label>
+              <input type="text" formControlName="adresse" placeholder="Lieu de l'opportunité" class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label>Niveau d'étude requis</label>
+              <select formControlName="niveauEtudeRequis" class="form-control">
+                <option value="">Sélectionnez un niveau</option>
+                <option *ngFor="let niveau of niveauxEtude" [value]="niveau">{{ niveau }}</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label>Nombre de postes *</label>
+              <input type="number" formControlName="nombrePostes" placeholder="Nombre de postes" class="form-control"
+                [class.error]="opportuniteForm.get('nombrePostes')?.invalid && opportuniteForm.get('nombrePostes')?.touched">
+            </div>
+  
+            <div class="form-group">
+              <label>Salaire</label>
+              <input type="number" formControlName="salaire" placeholder="Salaire proposé (optionnel)" class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label>Type de Contrat *</label>
+              <select formControlName="typeContrat" class="form-control">
+                <option value="">Sélectionnez un type</option>
+                <option *ngFor="let type of typesContrat" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label>Statut</label>
+              <select formControlName="statut" class="form-control">
+                <option *ngFor="let statut of statuts" [value]="statut">{{ statut }}</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label>Domaine *</label>
+              <select formControlName="domaineId" class="form-control">
+                <option value="">Sélectionnez un domaine</option>
+                <option *ngFor="let domaine of domaines" [value]="domaine.id">{{ domaine.intitule }}</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label>Organisation *</label>
+              <select formControlName="organisationId" class="form-control">
+                <option value="">Sélectionnez une organisation</option>
+                <option *ngFor="let org of organisations" [value]="org.id">{{ org.nom }}</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label>Ville *</label>
+              <select formControlName="villeId" class="form-control">
+                <option value="">Sélectionnez une ville</option>
+                <option *ngFor="let ville of villes" [value]="ville.id">{{ ville.nom }}</option>
+              </select>
+            </div>
+  
+          </form>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()"><i class="fas fa-times"></i> Annuler</button>
+          <button type="button" class="btn btn-success"
+            (click)="isEditing ? updateOpportunite() : addOpportunite()"
+            [disabled]="opportuniteForm.invalid || isLoading">
+            <i class="fas fa-save"></i> {{ isEditing ? 'Modifier' : 'Ajouter' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal Détails -->
+    <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
+      <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Détails de l'opportunité</h3>
+          <button class="modal-close" (click)="closeDetailModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedOpportunite">
+          <div class="detail-content">
+            <div class="detail-item"><label>ID :</label><span class="detail-value">{{ selectedOpportunite.id }}</span></div>
+            <div class="detail-item"><label>Titre :</label><span class="detail-value">{{ selectedOpportunite.titre }}</span></div>
+            <div class="detail-item"><label>Description :</label><span class="detail-value">{{ selectedOpportunite.description }}</span></div>
+            <div class="detail-item"><label>Type Contrat :</label><span class="detail-value">{{ selectedOpportunite.typeContrat || '—' }}</span></div>
+            <div class="detail-item"><label>Niveau Étude :</label><span class="detail-value">{{ selectedOpportunite.niveauEtudeRequis || '—' }}</span></div>
+            <div class="detail-item"><label>Organisation :</label><span class="detail-value">{{ selectedOpportunite.organisation?.nom || '—' }}</span></div>
+            <div class="detail-item"><label>Domaine :</label><span class="detail-value">{{ selectedOpportunite.domaine?.intitule || '—' }}</span></div>
+            <div class="detail-item"><label>Ville :</label><span class="detail-value">{{ selectedOpportunite.ville?.nom || '—' }}</span></div>
+            <div class="detail-item"><label>Date Début :</label><span class="detail-value">{{ selectedOpportunite.dateDebut | date:'dd/MM/yyyy' }}</span></div>
+            <div class="detail-item"><label>Date Fin :</label><span class="detail-value">{{ selectedOpportunite.dateFin ? (selectedOpportunite.dateFin | date:'dd/MM/yyyy') : '—' }}</span></div>
+            <div class="detail-item"><label>Adresse :</label><span class="detail-value">{{ selectedOpportunite.adresse || '—' }}</span></div>
+            <div class="detail-item"><label>Salaire :</label><span class="detail-value">{{ selectedOpportunite.salaire ? (selectedOpportunite.salaire + ' FCFA') : '—' }}</span></div>
+            <div class="detail-item"><label>Statut :</label>
+              <span class="detail-value">
+                <span [ngClass]="{
+                  'badge bg-success': selectedOpportunite.statut === 'ACTIVE',
+                  'badge bg-warning': selectedOpportunite.statut === 'POURVUE',
+                  'badge bg-danger': selectedOpportunite.statut === 'EXPIREE'
+                }">{{ selectedOpportunite.statut }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDetailModal()">
+            <i class="fas fa-times"></i> Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
