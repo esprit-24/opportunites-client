@@ -5,6 +5,7 @@ import { RegisterService } from '../services/register.service';
 import { NiveauEtude } from '../models/enums.model';
 import { Profil } from '../models/profil.model';
 import { ProfilsService } from '../services/profils.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -32,20 +33,21 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private registerService: RegisterService,
-    private profilsService: ProfilsService
+    private profilsService: ProfilsService,
+    private router: Router
   ) {
 
     this.niveauxEtude = Object.values(this.NiveauEtude);
 
     this.registerForm = this.fb.group({
       login: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
       firstName: [''],
       lastName: [''],
       dateNaissance: [null],
-      niveauEtude: [''],
+      niveauEtude: ['', [Validators.required]],
       statutActuel: [''],
       cvUrl: [''],
       profilId: [null, [Validators.required]],
@@ -98,17 +100,20 @@ export class RegisterComponent implements OnInit {
     // Ajouter le fichier CV
     formData.append('cvUrl', this.selectedFile);
 
-    this.registerService.register(formData).subscribe({
+    this.registerService.registerCandidat(formData).subscribe({
       next: () => {
         this.successMessage = 'Inscription réussie. En attente d’activation.';
         this.errorMessage = null;
         this.registerForm.reset();
+
+        this.router.navigate(['/login']);
       },
       error: () => {
         this.successMessage = null;
         this.errorMessage = 'Erreur lors de l’inscription.';
       }
     });
+    
   }
 
   // Récupérer les profils
@@ -140,6 +145,5 @@ export class RegisterComponent implements OnInit {
       this.selectedFile = null;
     }
   }
-
 
 }

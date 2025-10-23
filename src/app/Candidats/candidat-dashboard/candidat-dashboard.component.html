@@ -110,20 +110,20 @@
     <h2 class="text-center mb-5">Opportunités d'emploi populaires</h2>
     <div class="row">
       <div class="col-lg-8">
-        <div class="job-card" *ngFor="let opportunite of displayedOpportunites">
+        <div class="job-card" *ngFor="let opportunite of opportunites">
           <div class="row align-items-center">
             <div class="col-md-8">
               <h4 class="job-title">{{ opportunite.titre }}</h4>
               <p class="company-name">
-                <i class="fas fa-building me-2"></i>{{ opportunite.organisation.nom }}
+                <i class="fas fa-building me-2"></i>{{ opportunite.organisation?.nom }}
               </p>
               <p class="job-location">
-                <i class="fas fa-map-marker-alt me-2"></i>{{ opportunite.ville.nom }}
+                <i class="fas fa-map-marker-alt me-2"></i>{{ opportunite.ville?.nom }}
               </p>
               <p class="text-muted small mb-2">{{ opportunite.description }}</p>
               <div class="d-flex gap-2 flex-wrap">
                 <span class="job-type">{{ opportunite.typeContrat }}</span>
-                <span class="job-level">{{ opportunite.niveauEtude }}</span>
+                <span class="job-level">{{ opportunite.niveauEtudeRequis }}</span>
               </div>
             </div>
             <div class="col-md-4 text-end">

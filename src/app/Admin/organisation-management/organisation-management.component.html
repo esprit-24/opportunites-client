@@ -1,0 +1,216 @@
+<div class="organisation-management-container">
+    <!-- En-tête -->
+    <div class="header">
+      <h2>Gestion des Organisations</h2>
+      <button class="btn btn-primary" (click)="openAddModal()" [disabled]="isLoading">
+        <i class="fas fa-plus"></i> Nouvelle Organisation
+      </button>
+    </div>
+  
+    <!-- Messages -->
+    <div class="messages" *ngIf="errorMessage || successMessage">
+      <div class="alert alert-error" *ngIf="errorMessage">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ errorMessage }}
+      </div>
+      <div class="alert alert-success" *ngIf="successMessage">
+        <i class="fas fa-check-circle"></i>
+        {{ successMessage }}
+      </div>
+    </div>
+  
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input 
+          type="text" 
+          [formControl]="searchControl" 
+          placeholder="Rechercher par nom ou ville..."
+          class="search-input">
+      </div>
+      <div class="results-info" *ngIf="totalItems > 0">
+        <span>Affichage de {{ startItem }} à {{ endItem }} sur {{ totalItems }} résultat(s)</span>
+      </div>
+    </div>
+  
+    <!-- Tableau des organisations -->
+    <div class="table-container">
+      <div class="loading" *ngIf="isLoading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Chargement des organisations...</span>
+      </div>
+  
+      <div class="no-results" *ngIf="!isLoading && filteredOrganisations.length === 0">
+        <i class="fas fa-inbox"></i>
+        <span>Aucune organisation trouvée</span>
+      </div>
+  
+      <table class="organisations-table" *ngIf="!isLoading && filteredOrganisations.length > 0">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Secteur</th>
+            <th>Ville</th>
+            <th>Email</th>
+            <th class="actions-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let org of filteredOrganisations">
+            <td class="org-cell">{{ org.nom }}</td>
+            <td class="org-cell">{{ org.secteurActivite || '—' }}</td>
+            <td class="org-cell">{{ org.ville?.nom || '—' }}</td>
+            <td class="org-cell">{{ org.emailContact }}</td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-info" (click)="viewOrganisationDetail(org)" title="Détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-warning" (click)="editOrganisation(org)" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="deleteOrganisation(org)" title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination-info">
+        <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+      </div>
+      <div class="pagination">
+        <button class="btn btn-pagination" [disabled]="!hasPreviousPage" (click)="previousPage()">
+          <i class="fas fa-chevron-left"></i> Précédent
+        </button>
+        <div class="page-numbers">
+          <button *ngFor="let page of pages" class="btn btn-page" [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        </div>
+        <button class="btn btn-pagination" [disabled]="!hasNextPage" (click)="nextPage()">
+          Suivant <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Modal Ajout/Modification -->
+    <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ isEditing ? 'Modifier l\'organisation' : 'Nouvelle organisation' }}</h3>
+          <button class="modal-close" (click)="closeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="organisationForm" (ngSubmit)="isEditing ? updateOrganisation() : addOrganisation()">
+  
+            <div class="form-group">
+              <label>Nom *</label>
+              <input type="text" formControlName="nom" placeholder="Nom de l'organisation" class="form-control"
+                [class.error]="organisationForm.get('nom')?.invalid && organisationForm.get('nom')?.touched">
+            </div>
+  
+            <div class="form-group">
+              <label>Présentation *</label>
+              <textarea formControlName="presentation" rows="3" placeholder="Brève présentation..."
+                class="form-control"
+                [class.error]="organisationForm.get('presentation')?.invalid && organisationForm.get('presentation')?.touched"></textarea>
+            </div>
+  
+            <div class="form-group">
+              <label>Secteur d'activité</label>
+              <input type="text" formControlName="secteurActivite" placeholder="Secteur d'activité" class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label>Adresse *</label>
+              <input type="text" formControlName="adresse" placeholder="Adresse complète" class="form-control"
+                [class.error]="organisationForm.get('adresse')?.invalid && organisationForm.get('adresse')?.touched">
+            </div>
+  
+            <div class="form-group">
+              <label>Email de contact *</label>
+              <input type="email" formControlName="emailContact" placeholder="contact@exemple.com" class="form-control"
+                [class.error]="organisationForm.get('emailContact')?.invalid && organisationForm.get('emailContact')?.touched">
+            </div>
+  
+            <div class="form-group">
+              <label>Téléphone</label>
+              <input type="text" formControlName="telephone" placeholder="+221 ..." class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label>Site Web</label>
+              <input type="text" formControlName="siteWeb" placeholder="https://..." class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label>Logo (URL)</label>
+              <input type="text" formControlName="logoUrl" placeholder="https://mon-site/logo.png" class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label>Ville *</label>
+              <select formControlName="villeId" class="form-control"
+                [class.error]="organisationForm.get('villeId')?.invalid && organisationForm.get('villeId')?.touched">
+                <option value="">Sélectionnez une ville</option>
+                <option *ngFor="let ville of villes" [value]="ville.id">{{ ville.nom }}</option>
+              </select>
+            </div>
+  
+          </form>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()"><i class="fas fa-times"></i> Annuler</button>
+          <button type="button" class="btn btn-success"
+            (click)="isEditing ? updateOrganisation() : addOrganisation()"
+            [disabled]="organisationForm.invalid || isLoading">
+            <i class="fas fa-save"></i> {{ isEditing ? 'Modifier' : 'Ajouter' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal Détails -->
+    <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
+      <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Détails de l'organisation</h3>
+          <button class="modal-close" (click)="closeDetailModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedOrganisation">
+          <div class="detail-content">
+            <div class="detail-item"><label>ID :</label><span class="detail-value">{{ selectedOrganisation.id }}</span></div>
+            <div class="detail-item"><label>Nom :</label><span class="detail-value">{{ selectedOrganisation.nom }}</span></div>
+            <div class="detail-item"><label>Présentation :</label><span class="detail-value">{{ selectedOrganisation.presentation }}</span></div>
+            <div class="detail-item"><label>Secteur :</label><span class="detail-value">{{ selectedOrganisation.secteurActivite || '—' }}</span></div>
+            <div class="detail-item"><label>Adresse :</label><span class="detail-value">{{ selectedOrganisation.adresse }}</span></div>
+            <div class="detail-item"><label>Email :</label><span class="detail-value">{{ selectedOrganisation.emailContact }}</span></div>
+            <div class="detail-item"><label>Téléphone :</label><span class="detail-value">{{ selectedOrganisation.telephone || '—' }}</span></div>
+            <div class="detail-item"><label>Site Web :</label><span class="detail-value">{{ selectedOrganisation.siteWeb || '—' }}</span></div>
+            <div class="detail-item"><label>Logo :</label>
+              <span class="detail-value">
+                <img *ngIf="selectedOrganisation.logoUrl" [src]="selectedOrganisation.logoUrl" alt="Logo" style="max-height: 60px;">
+                <span *ngIf="!selectedOrganisation.logoUrl">—</span>
+              </span>
+            </div>
+            <div class="detail-item"><label>Ville :</label><span class="detail-value">{{ selectedOrganisation.ville?.nom || '—' }}</span></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDetailModal()">
+            <i class="fas fa-times"></i> Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

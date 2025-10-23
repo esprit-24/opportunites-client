@@ -28,8 +28,6 @@ export class AccueilComponent implements OnInit {
   domaines: Domaine[] = [];
   regions: Region[] = [];
   villes: Ville[] = [];
-  filteredOpportunites: Opportunite[] = [];
-  displayedOpportunites: Opportunite[] = [];
 
   typeContrats: string[] = Object.values(TypeContrat);
 

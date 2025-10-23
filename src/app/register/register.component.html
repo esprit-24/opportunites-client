@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#accueil">Retour à l’accueil</a>
+          <a class="nav-link" href="/login">Retour</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/register#Contact">Contact</a>
@@ -38,12 +38,12 @@
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label">Nom d'utilisateur <span class="text-danger">*</span></label>
+                  <label class="form-label">Login <span class="text-danger">*</span></label>
                   <input type="text" formControlName="login" class="form-control" />
                 </div>
 
                 <div class="col-md-6">
-                  <label class="form-label">Email</label>
+                  <label class="form-label">Email <span class="text-danger">*</span></label>
                   <input type="email" formControlName="email" class="form-control" />
                 </div>
 
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="col-md-6">
-                  <label class="form-label">Niveau d'étude</label>
+                  <label class="form-label">Niveau d'étude <span class="text-danger">*</span></label>
                   <select class="form-select" formControlName="niveauEtude">
                     <option value="" disabled selected>Choisissez un niveau</option>
                     <option *ngFor="let niveau of niveauxEtude" [value]="niveau">{{ niveau }}</option>

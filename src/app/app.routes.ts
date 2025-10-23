@@ -13,8 +13,6 @@ import { CandidatDashboardComponent } from './Candidats/candidat-dashboard/candi
 import { UserManagementComponent } from './Admin/user-management/user-management.component';
 import { DomaineManagementComponent } from './Admin/domaine-management/domaine-management.component';
 import { RegionManagementComponent } from './Admin/region-management/region-management.component';
-import { CandidaturesComponent } from './Recruteurs/candidatures/candidatures.component';
-import { CandidatureDetailComponent } from './Recruteurs/candidature-detail/candidature-detail.component';
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
@@ -23,14 +21,17 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
 
     // Routes protégées par des guards
+    
     { path: 'admin', component: AdminDashboardComponent, children: [
         { path: 'users', component: UserManagementComponent },
         { path: 'domaines', component: DomaineManagementComponent },
-        { path: 'regions', component: RegionManagementComponent }
+        { path: 'regions', component: RegionManagementComponent },
+        { path: 'departements', component: DepartementManagementComponent },
+        { path: 'villes', component: VilleManagementComponent },
+        { path: 'organisations', component: OrganisationManagementComponent }
     ] ,canActivate: [adminGuard] },
+    { path: 'register-recruteur', component: RegisterRecruteurComponent, canActivate: [adminGuard] },
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
-    { path: 'recruteur', component: RecruteurDashboardComponent},
-    { path: 'recruteur/ajout-offre', component: AjoutOffreComponent},
-    { path: 'recruteur/candidatures', component: CandidaturesComponent},
-    { path: 'recruteur/candidature/candidature-details/:email', component: CandidatureDetailComponent}
+    { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
+    { path: 'recruteur/ajout-offre', component: AjoutOffreComponent,},
 ];

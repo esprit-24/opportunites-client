@@ -1,0 +1,182 @@
+<!-- 🌐 Navigation - Page d'inscription Recruteur -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-briefcase me-2"></i>Inscription - Recruteur | EmploiSénégal
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/users">Retour</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register-recruteur#Contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- 🌿 Contenu principal -->
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="w-100">
+      <h2 class="text-center text-dark mb-5">
+        <i class="fas fa-user-tie text-success me-2 fs-2"></i> Recruteurs, inscrivez votre entreprise dès maintenant !
+      </h2>
+  
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="card shadow rounded-4 border-0">
+            <div class="card-header text-white rounded-top-4" style="background-color: #07a311;">
+              <h4 class="mb-0">Vos informations professionnelles</h4>
+            </div>
+  
+            <div class="card-body p-4">
+              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="row g-3">
+  
+                  <!-- Login -->
+                  <div class="col-md-6">
+                    <label class="form-label">Login <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="login" class="form-control" />
+                  </div>
+  
+                  <!-- Email -->
+                  <div class="col-md-6">
+                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                    <input type="email" formControlName="email" class="form-control" />
+                  </div>
+  
+                  <!-- Mot de passe -->
+                  <div class="col-md-6">
+                    <label class="form-label">Mot de passe <span class="text-danger">*</span></label>
+                    <input type="password" formControlName="password" class="form-control" />
+                  </div>
+  
+                  <!-- Confirmation du mot de passe -->
+                  <div class="col-md-6">
+                    <label class="form-label">Confirmez le mot de passe <span class="text-danger">*</span></label>
+                    <input type="password" formControlName="confirmPassword" class="form-control" />
+                    <div *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
+                      <small class="text-danger">Les mots de passe ne correspondent pas.</small>
+                    </div>
+                  </div>
+  
+                  <!-- Prénom -->
+                  <div class="col-md-6">
+                    <label class="form-label">Prénom</label>
+                    <input type="text" formControlName="firstName" class="form-control" />
+                  </div>
+  
+                  <!-- Nom -->
+                  <div class="col-md-6">
+                    <label class="form-label">Nom</label>
+                    <input type="text" formControlName="lastName" class="form-control" />
+                  </div>
+  
+                  <!-- Titre Professionnel -->
+                  <div class="col-md-6">
+                    <label class="form-label">Titre professionnel</label>
+                    <input type="text" formControlName="titreProfessionnel" class="form-control" placeholder="Ex : Responsable RH, Directeur de recrutement..." />
+                  </div>
+  
+                  <!-- Organisation -->
+                  <div class="col-md-6">
+                    <label class="form-label">Organisation</label>
+                    <select class="form-select" formControlName="organisationId">
+                      <option value="" disabled selected>Choisissez une organisation</option>
+                      <option *ngFor="let org of organisations" [value]="org.id">{{ org.nom }}</option>
+                    </select>
+                  </div>
+  
+                  <!-- Biographie -->
+                  <div class="col-12">
+                    <label class="form-label">Biographie</label>
+                    <textarea formControlName="biographie" rows="4" class="form-control"
+                      placeholder="Décrivez votre rôle, votre entreprise, ou vos domaines d’expertise..."></textarea>
+                  </div>
+  
+                </div>
+  
+                <!-- Bouton de soumission -->
+                <div class="mt-4 text-end">
+                  <button type="submit" class="btn btn-success px-4" [disabled]="registerForm.invalid">
+                    <i class="fas fa-user-tie me-2"></i>S'inscrire
+                  </button>
+                </div>
+  
+                <!-- Messages -->
+                <p *ngIf="successMessage" class="text-success mt-3">{{ successMessage }}</p>
+                <p *ngIf="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 🌍 Footer -->
+  <footer class="footer" id="Contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h5 class="footer-title">EmploiSénégal</h5>
+          <p class="text-muted">
+            La plateforme de référence pour l'emploi au Sénégal. 
+            Connectez votre entreprise aux meilleurs talents !
+          </p>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-light"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+  
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Candidats</h6>
+          <a href="#" class="footer-link">Trouver un emploi</a>
+          <a href="#" class="footer-link">Déposer un CV</a>
+          <a href="#" class="footer-link">Alerte emploi</a>
+        </div>
+  
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Recruteurs</h6>
+          <a href="#" class="footer-link">Publier une offre</a>
+          <a href="#" class="footer-link">Rechercher des CV</a>
+          <a href="#" class="footer-link">Nos tarifs</a>
+        </div>
+  
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Entreprise</h6>
+          <a href="#" class="footer-link">À propos</a>
+          <a href="#" class="footer-link">Presse</a>
+          <a href="#" class="footer-link">Carrières</a>
+        </div>
+  
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Support</h6>
+          <a href="#" class="footer-link">Centre d'aide</a>
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">CGU</a>
+        </div>
+      </div>
+  
+      <hr class="my-4 footer-divider" />
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="mb-0 text-muted">&copy; 2025 EmploiSénégal. Tous droits réservés.</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <p class="mb-0 text-muted">
+            <i class="fas fa-heart text-danger"></i> Fait avec passion au Sénégal
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  

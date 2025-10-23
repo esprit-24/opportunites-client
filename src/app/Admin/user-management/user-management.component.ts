@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/user.model';
 import { AdminService } from '../../services/admin.service';
+import { Router } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -22,7 +23,8 @@ export class UserManagementComponent implements OnInit {
   selectedUser: any;
 
   constructor(
-    private adminService: AdminService
+    private adminService: AdminService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -112,6 +114,11 @@ export class UserManagementComponent implements OnInit {
   hasRole(user: any, role: string): boolean {
     if (!user || !user.authorities) return false;
     return user.authorities.includes(role);
+  }
+
+  // Méthode appelée lors du clic sur le bouton
+  goToAddRecruteur(): void {
+    this.router.navigate(['/register-recruteur']);
   }
 
 }
