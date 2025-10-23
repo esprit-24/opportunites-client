@@ -1,16 +1,25 @@
 <!-- Job Listings -->
 <section class="py-5" id="emplois">
   <div class="container">
+
+    <!-- Bouton retour -->
+    <div class="mb-4">
+      <a routerLink="/candidat" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Retour
+      </a>
+    </div>
+
+
     <div class="text-center mb-5">
-  <h2 class="section-title">
-    🌟 Les opportunités d'emploi <strong>actives</strong>
-  </h2>
-</div>
+      <h2 class="section-title">
+        🌟 Les opportunités d'emploi <strong>actives</strong>
+      </h2>
+    </div>
 
-
-    <div class="row">
-      <div class="col-lg-8">
-        <div class="job-card" *ngFor="let opportunite of opportunites">
+    <!-- Grille flexible : 2 par ligne sur grand écran -->
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-6" *ngFor="let opportunite of opportunites">
+        <div class="job-card p-4 h-100 shadow-sm rounded">
           <div class="row align-items-center">
             <div class="col-md-8">
               <h4 class="job-title">{{ opportunite.titre }}</h4>
@@ -37,12 +46,13 @@
             </div>
           </div>
         </div>
-
-        <div class="text-center mt-4" *ngIf="opportunites.length === 0">
-          <i class="fas fa-search no-results-icon"></i>
-          <p class="text-muted mt-3">Aucune opportunité active pour le moment.</p>
-        </div>
       </div>
+    </div>
+
+    <!-- Message si aucune opportunité -->
+    <div class="text-center mt-5" *ngIf="opportunites.length === 0">
+      <i class="fas fa-search no-results-icon"></i>
+      <p class="text-muted mt-3">Aucune opportunité active pour le moment.</p>
     </div>
   </div>
 </section>
