@@ -31,6 +31,7 @@ export class CandidatDashboardComponent implements OnInit {
   villes: Ville[] = [];
 
 
+
   typeContrats: string[] = Object.values(TypeContrat);
 
   constructor(
