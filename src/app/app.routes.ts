@@ -17,15 +17,18 @@ import { DepartementManagementComponent } from './Admin/departement-management/d
 import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
 import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
 import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
+import { ToutesOpportunitesComponent } from './opportunites/toutes-opportunites/toutes-opportunites.component';
+
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
     { path: 'accueil', component: AccueilComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'toutes-opportunites', component: ToutesOpportunitesComponent },
 
     // Routes protégées par des guards
-    
+
     { path: 'admin', component: AdminDashboardComponent, children: [
         { path: 'users', component: UserManagementComponent },
         { path: 'domaines', component: DomaineManagementComponent },

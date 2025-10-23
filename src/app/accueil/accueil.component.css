@@ -225,3 +225,26 @@
 .footer-divider {
   border-color: #495057;
 }
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-outline-primary {
+  border-radius: 8px;
+}
+
+
+.search-card {
+  min-height: 300px; /* ajuste selon ton design */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* pousse les boutons vers le bas */
+}

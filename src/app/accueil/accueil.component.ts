@@ -11,6 +11,7 @@ import { VilleService } from '../services/ville.service';
 import { Ville } from '../models/ville.model';
 import { TypeContrat } from '../models/enums.model';
 import { DomaineService } from '../services/domaine.service';
+import { OpportuniteService } from '../services/opportunite.service';
 
 @Component({
   selector: 'app-accueil',
@@ -32,17 +33,20 @@ export class AccueilComponent implements OnInit {
   displayedOpportunites: Opportunite[] = [];
 
   typeContrats: string[] = Object.values(TypeContrat);
+  router: any;
 
   constructor(
     private villeService: VilleService,
-    private domaineService: DomaineService
+    private domaineService: DomaineService,
+    private opportuniteService: OpportuniteService
   ) {}
 
   ngOnInit(): void {
       this.getVilles();
       this.getDomaines();
+      this.loadOpportunites();
     }
-  
+
     // Récupération des villes
     getVilles(): void {
       this.villeService.getAllVilles().subscribe({
@@ -66,4 +70,26 @@ export class AccueilComponent implements OnInit {
         }
       });
     }
+
+    // Filtrage des opportunités
+    loadOpportunites(): void {
+      this.opportuniteService.getAllOpportunites().subscribe({
+        next: (data) => {
+          this.opportunites = data.slice(0, 2); // Afficher seulement les 3 premières opportunités
+        },
+
+        error: (error) => {
+          console.error('Erreur lors de la récupération des opportunités:', error);
+        }
+      });
+    }
+
+    postuler(offre: Opportunite): void {
+      this.router.navigate(['/login']);
+    }
+
+    voirPlus(offre: any): void {
+     offre.showFullDescription = !offre.showFullDescription;
+  }
+
 }
