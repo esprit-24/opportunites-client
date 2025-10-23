@@ -18,6 +18,8 @@ import { DepartementManagementComponent } from './Admin/departement-management/d
 import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
 import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
 import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
+import { OpportuniteManagementComponent } from './Admin/opportunite-management/opportunite-management.component';
+import { ToutesOpportunitesComponent } from './opportunites/toutes-opportunites/toutes-opportunites.component';
 
 export const routes: Routes = [
     { path: '', component: AccueilComponent },

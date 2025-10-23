@@ -4,6 +4,7 @@ import { Ville } from './ville.model';
 import { NiveauEtude, TypeContrat, Statut } from './enums.model';
 
 export interface Opportunite {
+showFullDescription: any;
     id?: number;
     titre: string;
     description: string;
