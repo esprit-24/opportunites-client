@@ -69,25 +69,20 @@ export class AccueilComponent implements OnInit {
       });
     }
 
-    // Filtrage des opportunités
+    
     loadOpportunites(): void {
       this.opportuniteService.getAllOpportunites().subscribe({
-        next: (data) => {
-          this.opportunites = data.slice(0, 2); // Afficher seulement les 3 premières opportunités
+        next: (data: Opportunite[]) => {
+          // Filtrer pour ne garder que les opportunités actives
+          const actives = data.filter(o => o.statut === 'ACTIVE');
+  
+          this.opportunites = actives.slice(0, 2);
         },
-
-        error: (error) => {
+  
+        error: (error: any) => {
           console.error('Erreur lors de la récupération des opportunités:', error);
         }
       });
     }
-
-    postuler(offre: Opportunite): void {
-      this.router.navigate(['/login']);
-    }
-
-    voirPlus(offre: any): void {
-     offre.showFullDescription = !offre.showFullDescription;
-  }
 
 }

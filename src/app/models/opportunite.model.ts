@@ -18,6 +18,4 @@ export interface Opportunite {
     organisation?: Organisation;
     domaine?: Domaine;
     ville?: Ville;
-
-    showFullDescription?: boolean;
 }
