@@ -4,7 +4,7 @@ import { Ville } from './ville.model';
 import { NiveauEtude, TypeContrat, Statut } from './enums.model';
 
 export interface Opportunite {
-    id: number;
+    id?: number;
     titre: string;
     description: string;
     dateDebut: string;
@@ -14,8 +14,8 @@ export interface Opportunite {
     nombrePostes: number;
     salaire?: number | null;
     statut?: Statut;
-    typeContrat?: TypeContrat | null;
-    organisation?: Organisation | null;
-    domaine?: Domaine | null;
-    ville?: Ville | null;
+    typeContrat?: TypeContrat;
+    organisation?: Organisation;
+    domaine?: Domaine;
+    ville?: Ville;
 }
