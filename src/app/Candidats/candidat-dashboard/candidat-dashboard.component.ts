@@ -13,6 +13,8 @@ import { DomaineService } from '../../services/domaine.service';
 import { OpportuniteService } from '../../services/opportunite.service';
 import { Organisation } from '../../models/organisation.model';
 import { OrganisationService } from '../../services/organisation.service';
+import { CandidatureService } from '../../services/candidature.service';
+import { AdminService } from '../../services/admin.service';
 
 
 @Component({
@@ -32,6 +34,9 @@ export class CandidatDashboardComponent implements OnInit {
   regions: Region[] = [];
   villes: Ville[] = [];
 
+  candidatures: any[] = [];
+
+
   totalOpportunites: number = 0;
   displayedNumber: number = 0; // Pour l'animation
 
@@ -49,16 +54,43 @@ export class CandidatDashboardComponent implements OnInit {
     private villeService: VilleService,
     private domaineService: DomaineService,
     private opportuniteService: OpportuniteService,
-    private organisationService: OrganisationService
+    private organisationService: OrganisationService,
+    private candidatureService: CandidatureService,
+    private adminService: AdminService
   )
   {}
 
   ngOnInit(): void {
+    this.getCurrentCandidat();
     this.getVilles();
     this.getDomaines();
     this.loadOpportunites();
   }
 
+  loadCandidatures(candidatId: number): void {
+    this.candidatureService.getCandidaturesByCandidat(candidatId).subscribe({
+      next: (data) => {
+        this.candidatures = data
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des candidatures du candidat:', err);
+      }
+    });
+  }
+
+  getCurrentCandidat(): void {
+    this.adminService.getCurrentAccount().subscribe({
+      next: (user) => {
+        if (user?.id) {
+          this.loadCandidatures(user.id);
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération du profil utilisateur:', err);
+      }
+    });
+  }
+  
   // Récupération des villes
   getVilles(): void {
     this.villeService.getAllVilles().subscribe({
@@ -101,7 +133,8 @@ export class CandidatDashboardComponent implements OnInit {
           // Filtrer pour ne garder que les opportunités actives
           const actives = data.filter(o => o.statut === 'ACTIVE');
 
-          this.opportunites = actives.slice(0, 2);
+          this.opportunites = actives;
+          
           this.totalOpportunites = actives.length;   // Pour le compteur total
           this.startCounter();
         },
@@ -154,10 +187,64 @@ startOrganisationsCounter(): void {
   }, stepTime);
 }
 
+alertMessage: string | null = null;
+alertType: 'success' | 'error' | 'info' | null = null;
+
+showAlert(message: string, type: 'success' | 'error' | 'info'): void {
+  this.alertMessage = message;
+  this.alertType = type;
+
+  // L'alerte disparaît automatiquement après 3 secondes
+  setTimeout(() => {
+    this.alertMessage = null;
+  }, 3000);
+}
+
+postuler(opportunite: Opportunite): void {
+  const token = this.authService.getToken();
+  if (!token) {
+    alert('Vous devez être connecté pour postuler.');
+    return;
+  }
+
+  // 1Récupération du profil connecté
+  this.adminService.getCurrentAccount().subscribe({
+    next: (user) => {
+      // Création de la candidature
+      const candidature = {
+        lettreMotivation: 'Je suis intéressé par cette opportunité.',
+        datePostulation: new Date().toISOString(), 
+        statutCandidature: 'EN_ATTENTE_VALIDATION_ADMIN',
+        opportunite: { id: opportunite.id },
+        candidat: { id: user.id }
+      };
+
+      console.log('Candidature envoyée :', candidature);
 
 
+      // Envoi vers le backend
+      this.candidatureService.addCandidature(candidature).subscribe({
+        next: () => {
+          alert('Votre candidature a été envoyée avec succès !');
+        },
+        error: (err) => {
+          if (err.status === 409) {
+            alert('Vous avez déjà postulé à cette opportunité.');
+          } else {
+            alert('Une erreur est survenue lors de la postulation.');
+          }
+          console.error('Erreur lors de la postulation :', err);
+        }
+      });
+    },
+    error: (err) => {
+      console.error('Erreur lors de la récupération du compte :', err);
+      alert('Impossible de récupérer votre profil. Veuillez vous reconnecter.');
+    }
+  });
+}
 
-
-
-
+dejaPostule(opportuniteId: number): boolean {
+  return this.candidatures.some(c => c.opportunite?.id === opportuniteId);
+}
 }

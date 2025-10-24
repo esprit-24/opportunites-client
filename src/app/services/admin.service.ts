@@ -44,6 +44,13 @@ export class AdminService {
   // Gestion des utilisateurs
   // ***********************************************************************************************
 
+  getCurrentAccount(): Observable<any> {
+    return this.http.get<any>('http://localhost:9090/api/account', {
+      headers: this.getAuthHeaders()
+    });
+  }
+  
+
   // Récupérer tous les utilisateurs
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/users`, {

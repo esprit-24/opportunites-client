@@ -1,0 +1,163 @@
+<div class="candidature-management-container">
+    <!-- En-tête -->
+    <div class="header">
+      <h2>Gestion des Candidatures</h2>
+    </div>
+  
+    <!-- Messages -->
+    <div class="messages" *ngIf="errorMessage || successMessage">
+      <div class="alert alert-error" *ngIf="errorMessage">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ errorMessage }}
+      </div>
+      <div class="alert alert-success" *ngIf="successMessage">
+        <i class="fas fa-check-circle"></i>
+        {{ successMessage }}
+      </div>
+    </div>
+  
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          [formControl]="searchControl"
+          placeholder="Rechercher par opportunité ou candidat..."
+          class="search-input">
+      </div>
+      <div class="results-info" *ngIf="totalItems > 0">
+        <span>Affichage de {{ startItem }} à {{ endItem }} sur {{ totalItems }} résultat(s)</span>
+      </div>
+    </div>
+  
+    <!-- Tableau des candidatures -->
+    <div class="table-container">
+      <div class="loading" *ngIf="isLoading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Chargement des candidatures...</span>
+      </div>
+  
+      <div class="no-results" *ngIf="!isLoading && filteredCandidatures.length === 0">
+        <i class="fas fa-inbox"></i>
+        <span>Aucune candidature trouvée</span>
+      </div>
+  
+      <table class="candidatures-table" *ngIf="!isLoading && filteredCandidatures.length > 0">
+        <thead>
+          <tr>
+            <th>Candidat</th>
+            <th>Opportunité</th>
+            <th>Date Postulation</th>
+            <th>Lettre Motivation</th>
+            <th>Statut</th>
+            <th class="actions-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cand of filteredCandidatures">
+            <td class="cand-cell">
+                {{ cand.candidat?.user?.firstName }} {{ cand.candidat?.user?.lastName }}
+            </td>
+            <td class="cand-cell">{{ cand.opportunite?.titre || '—' }}</td>
+            <td class="cand-cell">{{ cand.datePostulation | date:'dd/MM/yyyy' }}</td>
+            <td class="cand-cell">{{ cand.lettreMotivation || '—' }}</td>
+            <td class="cand-cell">
+                <span [ngClass]="{
+                    'badge bg-secondary': cand.statutCandidature === StatutCandidature.EN_ATTENTE_VALIDATION_ADMIN,
+                    'badge bg-success': cand.statutCandidature === StatutCandidature.VALIDEE_ADMIN || cand.statutCandidature === StatutCandidature.ACCEPTEE_RECRUTEUR,
+                    'badge bg-warning': cand.statutCandidature === StatutCandidature.VUE_RECRUTEUR,
+                    'badge bg-danger': cand.statutCandidature === StatutCandidature.REJETEE_ADMIN || cand.statutCandidature === StatutCandidature.REFUSEE_RECRUTEUR
+                  }">
+                    {{ cand.statutCandidature }}
+                </span>
+            </td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-info" (click)="viewCandidatureDetail(cand)" title="Détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <!-- Valider -->
+                <button
+                    class="btn btn-sm btn-success"
+                    (click)="updateStatut(cand, StatutCandidature.VALIDEE_ADMIN)"
+                    [disabled]="!canAdminChangeStatus(cand, StatutCandidature.VALIDEE_ADMIN)"
+                    title="Valider">
+                    <i class="fas fa-check"></i>
+                </button>
+
+                <!-- Rejeter -->
+                <button
+                    class="btn btn-sm btn-danger"
+                    (click)="updateStatut(cand, StatutCandidature.REJETEE_ADMIN)"
+                    [disabled]="!canAdminChangeStatus(cand, StatutCandidature.REJETEE_ADMIN)"
+                    title="Rejeter">
+                    <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination-info">
+        <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+      </div>
+      <div class="pagination">
+        <button class="btn btn-pagination" [disabled]="!hasPreviousPage" (click)="previousPage()">
+          <i class="fas fa-chevron-left"></i> Précédent
+        </button>
+        <div class="page-numbers">
+          <button *ngFor="let page of pages" class="btn btn-page" [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        </div>
+        <button class="btn btn-pagination" [disabled]="!hasNextPage" (click)="nextPage()">
+          Suivant <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Modal Détails -->
+    <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
+      <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Détails de la candidature</h3>
+          <button class="modal-close" (click)="closeDetailModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedCandidature">
+          <div class="detail-content">
+            <div class="detail-item"><label>ID :</label><span class="detail-value">{{ selectedCandidature.id }}</span></div>
+            <div class="detail-item"><label>Candidat :</label>
+              <span class="detail-value">
+                {{ selectedCandidature.candidat?.user?.firstName }} {{ selectedCandidature.candidat?.user?.lastName }}
+              </span>
+            </div>
+            <div class="detail-item"><label>Opportunité :</label><span class="detail-value">{{ selectedCandidature.opportunite?.titre }}</span></div>
+            <div class="detail-item"><label>Date Postulation :</label><span class="detail-value">{{ selectedCandidature.datePostulation | date:'dd/MM/yyyy' }}</span></div>
+            <div class="detail-item"><label>Lettre Motivation :</label><span class="detail-value">{{ selectedCandidature.lettreMotivation || '—' }}</span></div>
+            <div class="detail-item"><label>Statut :</label>
+              <span class="detail-value">
+                <span [ngClass]="{
+                  'badge bg-secondary': selectedCandidature.statutCandidature === 'EN_ATTENTE_VALIDATION_ADMIN',
+                  'badge bg-success': selectedCandidature.statutCandidature === 'VALIDEE_ADMIN' || selectedCandidature.statutCandidature === 'ACCEPTEE_RECRUTEUR',
+                  'badge bg-warning': selectedCandidature.statutCandidature === 'VUE_RECRUTEUR',
+                  'badge bg-danger': selectedCandidature.statutCandidature === 'REJETEE_ADMIN' || selectedCandidature.statutCandidature === 'REFUSEE_RECRUTEUR'
+                }">{{ selectedCandidature.statutCandidature }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDetailModal()">
+            <i class="fas fa-times"></i> Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -20,6 +20,7 @@ import { OrganisationManagementComponent } from './Admin/organisation-management
 import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
 import { OpportuniteManagementComponent } from './Admin/opportunite-management/opportunite-management.component';
 import { ListeOpportunitesComponent } from './liste-opportunites/liste-opportunites.component';
+import { CandidatureManagementComponent } from './Admin/candidature-management/candidature-management.component';
 
 
 
@@ -38,7 +39,8 @@ export const routes: Routes = [
         { path: 'departements', component: DepartementManagementComponent },
         { path: 'villes', component: VilleManagementComponent },
         { path: 'organisations', component: OrganisationManagementComponent },
-        { path: 'opportunites', component: OpportuniteManagementComponent }
+        { path: 'opportunites', component: OpportuniteManagementComponent },
+        { path: 'candidatures', component: CandidatureManagementComponent }
     ], canActivate: [adminGuard] },
     { path: 'register-recruteur', component: RegisterRecruteurComponent, canActivate: [adminGuard] },
 

@@ -1,4 +1,5 @@
 import { NiveauEtude } from './enums.model';
+import { User } from './user.model';
 
 export interface Candidat {
     id: number;
@@ -6,4 +7,5 @@ export interface Candidat {
     niveauEtude: NiveauEtude;
     cv: string;
     statutActuel: string;
+    user?: User
 }
