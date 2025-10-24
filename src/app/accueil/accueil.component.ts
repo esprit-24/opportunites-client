@@ -11,6 +11,9 @@ import { VilleService } from '../services/ville.service';
 import { Ville } from '../models/ville.model';
 import { TypeContrat } from '../models/enums.model';
 import { DomaineService } from '../services/domaine.service';
+import { OpportuniteService } from '../services/opportunite.service';
+import { OrganisationService } from '../services/organisation.service';
+import { Organisation } from '../models/organisation.model';
 
 @Component({
   selector: 'app-accueil',
@@ -30,17 +33,30 @@ export class AccueilComponent implements OnInit {
   villes: Ville[] = [];
 
   typeContrats: string[] = Object.values(TypeContrat);
+  router: any;
+
+  totalOpportunites: number = 0;
+  displayedNumber: number = 0; // Pour l'animation
+
+  displayedOrganisations: number = 0;
+  organisations: Organisation[] = [];
+  totalOrganisations: number = 0;
+
+
 
   constructor(
     private villeService: VilleService,
-    private domaineService: DomaineService
+    private domaineService: DomaineService,
+    private opportuniteService: OpportuniteService,
+    private organisationService: OrganisationService
   ) {}
 
   ngOnInit(): void {
       this.getVilles();
       this.getDomaines();
+      this.loadOpportunites();
     }
-  
+
     // Récupération des villes
     getVilles(): void {
       this.villeService.getAllVilles().subscribe({
@@ -64,4 +80,71 @@ export class AccueilComponent implements OnInit {
         }
       });
     }
+
+
+    loadOpportunites(): void {
+      this.opportuniteService.getAllOpportunites().subscribe({
+        next: (data: Opportunite[]) => {
+          // Filtrer pour ne garder que les opportunités actives
+          const actives = data.filter(o => o.statut === 'ACTIVE');
+
+          this.opportunites = actives.slice(0, 2);
+          this.totalOpportunites = actives.length;   // Pour le compteur total
+          this.startCounter();
+        },
+
+        error: (error: any) => {
+          console.error('Erreur lors de la récupération des opportunités:', error);
+        }
+      });
+    }
+
+    startCounter(): void {
+    let count = 0;
+    const interval = setInterval(() => {
+      count++;
+      this.displayedNumber = count;
+      if (count >= this.totalOpportunites) {
+        clearInterval(interval);
+      }
+    }, 50); // vitesse de l'animation
+  }
+
+  // Organisations
+  loadOrganisations(): void {
+    this.organisationService.getAllOrganisations().subscribe({
+      next: (data: Organisation[]) => {
+        this.organisations = data;
+        this.totalOrganisations = data.length;
+        this.startOrganisationsCounter();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  startOrganisationsCounter(): void {
+    let count = 0;
+    const interval = setInterval(() => {
+      count++;
+      this.displayedOrganisations = count;
+      if (count >= this.totalOrganisations) clearInterval(interval);
+    }, 50);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

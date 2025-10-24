@@ -17,6 +17,16 @@ import { VilleManagementComponent } from './Admin/ville-management/ville-managem
 import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
 import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
 
+import { DepartementManagementComponent } from './Admin/departement-management/departement-management.component';
+import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
+import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
+import { RegisterRecruteurComponent } from './register-recruteur/register-recruteur.component';
+import { OpportuniteManagementComponent } from './Admin/opportunite-management/opportunite-management.component';
+import { ListeOpportunitesComponent } from './liste-opportunites/liste-opportunites.component';
+import { CandidatureManagementComponent } from './Admin/candidature-management/candidature-management.component';
+
+
+
 export const routes: Routes = [
     { path: '', component: AccueilComponent },
     { path: 'accueil', component: AccueilComponent },
@@ -24,16 +34,21 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
 
     // Routes protégées par des guards
-    
+
     { path: 'admin', component: AdminDashboardComponent, children: [
         { path: 'users', component: UserManagementComponent },
         { path: 'domaines', component: DomaineManagementComponent },
         { path: 'regions', component: RegionManagementComponent },
         { path: 'departements', component: DepartementManagementComponent },
         { path: 'villes', component: VilleManagementComponent },
-        { path: 'organisations', component: OrganisationManagementComponent }
-    ] ,canActivate: [adminGuard] },
+        { path: 'organisations', component: OrganisationManagementComponent },
+        { path: 'opportunites', component: OpportuniteManagementComponent },
+        { path: 'candidatures', component: CandidatureManagementComponent }
+    ], canActivate: [adminGuard] },
     { path: 'register-recruteur', component: RegisterRecruteurComponent, canActivate: [adminGuard] },
+
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
+    { path: 'liste-opportunites', component: ListeOpportunitesComponent, canActivate: [candidatGuard]},
+
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
 ];

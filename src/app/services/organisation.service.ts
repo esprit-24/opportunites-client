@@ -11,6 +11,7 @@ export class OrganisationService {
 
   // URL de base
   private apiUrl = 'http://localhost:9090/api/organisations';
+  organisationService: any;
 
   constructor(private http: HttpClient,private authService: AuthService) { }
 
@@ -56,5 +57,6 @@ export class OrganisationService {
       headers: this.getAuthHeaders()
     });
   }
+
 
 }

@@ -141,7 +141,7 @@
         </div>
       </div>
 
-      <!-- Sidebar -->
+<!-- Sidebar -->
       <div class="col-lg-4">
         <div class="card search-card">
           <h5 class="mb-3">Conseils carrière</h5>
@@ -181,34 +181,35 @@
       </div>
     </div>
   </div>
+
+  <div class="d-flex justify-content-center mt-3">
+    <button class="btn btn-primary-custom px-4" [routerLink]="['/login']">
+      <i class="fas fa-clipboard me-2"></i> Explorer les opportunités
+    </button>
+  </div>
+
 </section>
 
 <!-- Stats Section -->
 <section class="stats-section">
   <div class="container">
     <div class="row text-center">
-      <div class="col-md-3 col-6">
-        <div class="stat-card">
-          <span class="stat-number">0</span>
+      <div class="col-md-4 col-6">
+         <div class="stat-card">
+            <span class="stat-number">{{ displayedNumber }}</span>
           <span class="stat-label">Opportunités</span>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
+          </div>
+         </div>
+      <div class="col-md-4 col-6">
         <div class="stat-card">
-          <span class="stat-number">0</span>
+          <span class="stat-number">{{ displayedOrganisations }}</span>
           <span class="stat-label">Organisations</span>
         </div>
       </div>
-      <div class="col-md-3 col-6">
+      <div class="col-md-4 col-6">
         <div class="stat-card">
           <span class="stat-number">0</span>
           <span class="stat-label">Candidats inscrits</span>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="stat-card">
-          <span class="stat-number">0</span>
-          <span class="stat-label">Placements réussis</span>
         </div>
       </div>
     </div>
@@ -231,9 +232,6 @@
           <li class="mb-2"><i class="fas fa-check me-3"></i>Outils de tri et de filtrage</li>
           <li class="mb-2"><i class="fas fa-check me-3"></i>Support dédié</li>
         </ul>
-        <button class="btn btn-secondary-custom me-3" routerLink="/login">
-          <i class="fas fa-plus me-2"></i>Publier une opportunité
-        </button>
         <button class="btn btn-outline-light">
           <i class="fas fa-info-circle me-2"></i>En savoir plus
         </button>
