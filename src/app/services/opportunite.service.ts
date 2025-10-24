@@ -59,4 +59,9 @@ export class OpportuniteService {
       headers: this.getAuthHeaders()
     });
   }
+  // Récupérer les opportunités par organisation
+  getOpportunitesByOrganisation(organisationId: number) {
+  return this.http.get<Opportunite[]>(`http://localhost:9090/api/opportunites/organisation/${organisationId}`);
+}
+
 }

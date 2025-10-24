@@ -1,19 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-dark p-3 rounded mb-4"
-     style="background-color: #07a311;">
+<nav class="navbar navbar-expand-lg navbar-dark p-3 rounded mb-4" style="background-color: #07a311;">
   <div class="container-fluid d-flex align-items-center justify-content-between">
-
     <!-- Gauche : Photo + infos -->
     <div class="d-flex align-items-center">
-      <!-- Photo de profil -->
       <img src="https://via.placeholder.com/60"
            class="rounded-circle me-3"
            alt="Photo de profil"
            width="60" height="60" />
-
-      <!-- Infos : Prénom, nom, titre -->
       <div class="text-white">
-        <div class="fw-bold fs-5">papa waly</div>
-        <div class="fst-italic">directeur resource humaine</div>
+        <div class="fst-italic">{{ recruteur.organisation }}</div>
       </div>
     </div>
 
@@ -24,50 +18,35 @@
     </div>
   </div>
 </nav>
+
 <div class="container mt-4">
   <h2 class="text-center mb-4 text-success fw-bold">Bienvenue sur votre tableau de bord</h2>
 
   <!-- Statistiques -->
   <div class="row text-center mb-4">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="card bg-light shadow-sm border-success">
         <div class="card-body">
           <h5 class="card-title text-success">Offres publiées</h5>
-          <p class="display-6 fw-bold">6</p>
+          <p class="display-6 fw-bold">{{ opportunites.length }}</p>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="card bg-light shadow-sm border-success">
         <div class="card-body">
           <h5 class="card-title text-success">Candidatures reçues</h5>
-          <p class="display-6 fw-bold">24</p>
+          <p class="display-6 fw-bold">{{candidatures.length}}</p> <!-- à remplacer par le vrai nombre -->
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card bg-light shadow-sm border-success">
-        <div class="card-body">
-          <h5 class="card-title text-success">Entretiens programmés</h5>
-          <p class="display-6 fw-bold">3</p>
-        </div>
-      </div>
-    </div>
+  
   </div>
 
   <!-- Actions principales -->
   <div class="row mb-4">
-    <div class="col-md-6">
-      <div class="card shadow-sm">
-        <div class="card-body text-center">
-          <h5 class="card-title">📢 Publier une nouvelle offre</h5>
-          <p class="card-text">Attirez les meilleurs talents en postant une offre.</p>
-          <button class="btn btn-success" (click)="allerAjouterOffre()">Ajouter une offre</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
+    
+    <div class="col-md-12">
       <div class="card shadow-sm">
         <div class="card-body text-center">
           <h5 class="card-title">📄 Voir les candidatures</h5>
@@ -78,15 +57,20 @@
     </div>
   </div>
 
-  <!-- Dernières offres -->
+  <!-- Dernières offres dynamiques -->
   <div class="card shadow-sm mb-4">
     <div class="card-header bg-success text-white">
       Dernières offres publiées
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Développeur Full Stack - Dakar</li>
-      <li class="list-group-item">Chargé(e) de communication - Remote</li>
-      <li class="list-group-item">Data Analyst Junior - Saint-Louis</li>
+      <li *ngFor="let opp of opportunites" class="list-group-item">
+        <strong>{{ opp.titre }}</strong>
+        <span *ngIf="opp.ville"> - {{ opp.ville.nom }}</span>
+        <span *ngIf="opp.dateFin"> (fin: {{ opp.dateFin | date:'shortDate' }})</span>
+      </li>
+      <li *ngIf="opportunites.length === 0" class="list-group-item text-center text-muted">
+        Aucune opportunité disponible pour le moment.
+      </li>
     </ul>
   </div>
 
