@@ -21,6 +21,7 @@ import { RegisterRecruteurComponent } from './register-recruteur/register-recrut
 import { OpportuniteManagementComponent } from './Admin/opportunite-management/opportunite-management.component';
 import { ListeOpportunitesComponent } from './liste-opportunites/liste-opportunites.component';
 import { CandidatureManagementComponent } from './Admin/candidature-management/candidature-management.component';
+import { ProfilCandidatComponent } from './Candidats/profil-candidat/profil-candidat.component';
 
 
 
@@ -45,6 +46,7 @@ export const routes: Routes = [
     { path: 'register-recruteur', component: RegisterRecruteurComponent, canActivate: [adminGuard] },
 
     { path: 'candidat', component: CandidatDashboardComponent, canActivate: [candidatGuard]},
+    { path: 'candidat/profil', component: ProfilCandidatComponent },
     { path: 'liste-opportunites', component: ListeOpportunitesComponent, canActivate: [candidatGuard]},
 
     { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
