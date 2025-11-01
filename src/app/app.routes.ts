@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { AdminDashboardComponent } from './Admin/admin-dashboard/admin-dashboard.component';
-import { RecruteurDashboardComponent } from './Recruteurs/recruteur-dashboard/recruteur-dashboard.component';
 
 import { RegisterComponent } from './register/register.component';
 import { adminGuard } from './guards/admin.guard';
@@ -20,6 +19,7 @@ import { RegisterRecruteurComponent } from './register-recruteur/register-recrut
 import { OrganisationManagementComponent } from './Admin/organisation-management/organisation-management.component';
 import { VilleManagementComponent } from './Admin/ville-management/ville-management.component';
 import { DepartementManagementComponent } from './Admin/departement-management/departement-management.component';
+import { RecruteurManagementComponent } from './Recruteurs/recruteur-management/recruteur-management.component';
 
 
 
@@ -47,5 +47,5 @@ export const routes: Routes = [
     { path: 'candidat/profil', component: ProfilCandidatComponent },
     { path: 'liste-opportunites', component: ListeOpportunitesComponent, canActivate: [candidatGuard]},
 
-    { path: 'recruteur', component: RecruteurDashboardComponent, canActivate: [recruteurGuard]},
+    { path: 'recruteur', component: RecruteurManagementComponent, canActivate: [recruteurGuard]},
 ];
