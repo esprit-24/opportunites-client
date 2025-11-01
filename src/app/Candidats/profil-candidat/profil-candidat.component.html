@@ -1,0 +1,157 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-briefcase me-2"></i>EmploiSénégal
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/candidat']">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/candidat/profil']" fragment="emplois">Emplois</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" [routerLink]="['/candidat/profil']">Profil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/candidat/profil#contact">Contact</a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-danger-custom" href="#" (click)="logout()">
+              <i class="fas fa-sign-out-alt me-1"></i> Se déconnecter
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Section Profil -->
+  <section class="profil-section py-5" id="profil">
+    <div class="container mt-5 pt-5">
+      <h2 class="text-center mb-5 fw-bold text-success">Mon Profil</h2>
+  
+      <!-- Informations personnelles -->
+      <div class="card shadow-sm mb-5 border-0 rounded-3">
+        <div class="card-body">
+          <h4 class="text-success mb-4"><i class="fas fa-user-circle me-2"></i> Informations personnelles</h4>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <strong>Nom complet :</strong> {{ user?.firstName }} {{ user?.lastName }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Email :</strong> {{ user?.email }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Identifiant :</strong> {{ user?.login }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Rôle :</strong>
+              <span class="badge bg-success" *ngIf="user?.authorities?.includes('ROLE_CANDIDAT')">Candidat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Candidatures -->
+      <div class="container mt-5 pt-5">
+        <h2 class="text-center text-success mb-5">Mes Candidatures</h2>
+      
+        <div *ngIf="isLoading" class="text-center">
+          <div class="spinner-border text-success"></div>
+          <p>Chargement en cours...</p>
+        </div>
+      
+        <div *ngIf="!isLoading && candidatures.length === 0" class="text-center text-muted">
+          <i class="fas fa-inbox fa-3x mb-3"></i>
+          <p>Aucune candidature envoyée pour le moment.</p>
+        </div>
+      
+        <div class="row g-4" *ngIf="!isLoading && candidatures.length > 0">
+          <div class="col-md-6" *ngFor="let c of candidatures">
+            <div class="card shadow-sm border-0 rounded-3">
+              <div class="card-body">
+                <h5 class="text-success">{{ c.opportunite?.titre }}</h5>
+                <p class="text-muted small mb-2">
+                  <i class="fas fa-building me-1"></i> {{ c.opportunite?.organisation?.nom }} <br>
+                  <i class="fas fa-map-marker-alt me-1"></i> {{ c.opportunite?.ville?.nom }}
+                </p>
+                <p><strong>Date :</strong> {{ c.datePostulation | date:'dd/MM/yyyy' }}</p>
+                <span class="badge px-3 py-2" [ngClass]="getStatutBadgeClass(c.statutCandidature)">
+                  {{ c.statutCandidature.replaceAll('_', ' ') }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h5 class="footer-title">EmploiSénégal</h5>
+          <p class="text-muted">
+            La plateforme de référence pour l'emploi des jeunes au Sénégal.
+            Nous connectons les talents avec les opportunités.
+          </p>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-light"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Candidats</h6>
+          <a href="#" class="footer-link">Rechercher un emploi</a>
+          <a href="#" class="footer-link">Déposer un CV</a>
+          <a href="#" class="footer-link">Alerte emploi</a>
+          <a href="#" class="footer-link">Conseils carrière</a>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Recruteurs</h6>
+          <a href="#" class="footer-link">Publier une opportunité</a>
+          <a href="#" class="footer-link">Rechercher des CV</a>
+          <a href="#" class="footer-link">Nos tarifs</a>
+          <a href="#" class="footer-link">Support</a>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Entreprise</h6>
+          <a href="#" class="footer-link">À propos</a>
+          <a href="#" class="footer-link">Notre équipe</a>
+          <a href="#" class="footer-link">Presse</a>
+          <a href="#" class="footer-link">Carrières</a>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-title">Support</h6>
+          <a href="#" class="footer-link">Centre d'aide</a>
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">CGU</a>
+          <a href="#" class="footer-link">Confidentialité</a>
+        </div>
+      </div>
+      <hr class="my-4 footer-divider">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="mb-0 text-muted">&copy; 2025 EmploiSénégal. Tous droits réservés.</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <p class="mb-0 text-muted">
+            <i class="fas fa-heart text-danger"></i> Fait avec passion au Sénégal
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  

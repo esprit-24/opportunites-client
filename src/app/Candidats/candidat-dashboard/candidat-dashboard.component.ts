@@ -44,6 +44,11 @@ export class CandidatDashboardComponent implements OnInit {
   organisations: Organisation[] = [];
   totalOrganisations: number = 0;
 
+  // Critères de recherche
+  selectedDomaineId: number | null = null;
+  selectedTypeContrat: string | null = null;
+  selectedVilleId: number | null = null;
+  selectedSalaireMin: number = 0;
 
 
   typeContrats: string[] = Object.values(TypeContrat);
@@ -65,8 +70,10 @@ export class CandidatDashboardComponent implements OnInit {
     this.getVilles();
     this.getDomaines();
     this.loadOpportunites();
+    this.loadOrganisations();
   }
 
+  // Récupération des candidatures d'un candidat
   loadCandidatures(candidatId: number): void {
     this.candidatureService.getCandidaturesByCandidat(candidatId).subscribe({
       next: (data) => {
@@ -78,6 +85,7 @@ export class CandidatDashboardComponent implements OnInit {
     });
   }
 
+  // Récupération de l'utilisateur courant
   getCurrentCandidat(): void {
     this.adminService.getCurrentAccount().subscribe({
       next: (user) => {
@@ -103,8 +111,8 @@ export class CandidatDashboardComponent implements OnInit {
     });
   }
 
-    // Récupération des domaines
-    getDomaines(): void {
+  // Récupération des domaines
+  getDomaines(): void {
       this.domaineService.getAllDomaines().subscribe({
         next: (domaines: Domaine[]) => {
           this.domaines = domaines;
@@ -113,8 +121,9 @@ export class CandidatDashboardComponent implements OnInit {
           console.error('Erreur lors de la récupération des domaines:', error);
         }
       });
-    }
+  }
 
+  // Déconnexion
   logout(event: Event) {
     event.preventDefault(); // Empêche le comportement par défaut du lien
 
@@ -126,7 +135,7 @@ export class CandidatDashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-
+  // Récupération des opportunités actives
   loadOpportunites(): void {
       this.opportuniteService.getAllOpportunites().subscribe({
         next: (data: Opportunite[]) => {
@@ -135,116 +144,132 @@ export class CandidatDashboardComponent implements OnInit {
 
           this.opportunites = actives;
           
-          this.totalOpportunites = actives.length;   // Pour le compteur total
-          this.startCounter();
+          this.totalOpportunites = actives.length;
         },
 
         error: (error: any) => {
           console.error('Erreur lors de la récupération des opportunités:', error);
         }
       });
-    }
-
-    startCounter(): void {
-    let count = 0;
-    const interval = setInterval(() => {
-      count++;
-      this.displayedNumber = count;
-      if (count >= this.totalOpportunites) {
-        clearInterval(interval);
-      }
-    }, 50); // vitesse de l'animation
   }
 
- // Organisations
-loadOrganisations(): void {
-  this.organisationService.getAllOrganisations().subscribe({
-    next: (data: Organisation[]) => {
-      this.organisations = data;
-      this.totalOrganisations = data.length;
+ // Récupération des organisations
+  loadOrganisations(): void {
+    this.organisationService.getAllOrganisations().subscribe({
+      next: (data: Organisation[]) => {
+        this.organisations = data;
+        this.totalOrganisations = data.length;
 
-      // Lancer l'animation seulement si total > 0
-      if (this.totalOrganisations > 0) {
-        this.startOrganisationsCounter();
-      }
-    },
-    error: (err) => console.error(err)
-  });
-}
-
-startOrganisationsCounter(): void {
-  this.displayedOrganisations = 0;
-  const duration = 1000; // durée de l'animation en ms
-  const stepTime = Math.floor(duration / this.totalOrganisations);
-  let count = 0;
-
-  const interval = setInterval(() => {
-    count++;
-    this.displayedOrganisations = count;
-    if (count >= this.totalOrganisations) {
-      clearInterval(interval);
-    }
-  }, stepTime);
-}
-
-alertMessage: string | null = null;
-alertType: 'success' | 'error' | 'info' | null = null;
-
-showAlert(message: string, type: 'success' | 'error' | 'info'): void {
-  this.alertMessage = message;
-  this.alertType = type;
-
-  // L'alerte disparaît automatiquement après 3 secondes
-  setTimeout(() => {
-    this.alertMessage = null;
-  }, 3000);
-}
-
-postuler(opportunite: Opportunite): void {
-  const token = this.authService.getToken();
-  if (!token) {
-    alert('Vous devez être connecté pour postuler.');
-    return;
+        console.log(this.totalOrganisations)
+      },
+      error: (err) => console.error(err)
+    });
   }
 
-  // 1Récupération du profil connecté
-  this.adminService.getCurrentAccount().subscribe({
-    next: (user) => {
-      // Création de la candidature
-      const candidature = {
-        lettreMotivation: 'Je suis intéressé par cette opportunité.',
-        datePostulation: new Date().toISOString(), 
-        statutCandidature: 'EN_ATTENTE_VALIDATION_ADMIN',
-        opportunite: { id: opportunite.id },
-        candidat: { id: user.id }
-      };
+  // Alertes
+  alertMessage: string | null = null;
+  alertType: 'success' | 'error' | 'info' | null = null;
 
-      console.log('Candidature envoyée :', candidature);
+  showAlert(message: string, type: 'success' | 'error' | 'info'): void {
+    this.alertMessage = message;
+    this.alertType = type;
 
+    // L'alerte disparaît automatiquement après 3 secondes
+    setTimeout(() => {
+      this.alertMessage = null;
+    }, 3000);
+  }
 
-      // Envoi vers le backend
-      this.candidatureService.addCandidature(candidature).subscribe({
-        next: () => {
-          alert('Votre candidature a été envoyée avec succès !');
-        },
-        error: (err) => {
-          if (err.status === 409) {
-            alert('Vous avez déjà postulé à cette opportunité.');
-          } else {
-            alert('Une erreur est survenue lors de la postulation.');
+  // Postuler
+  postuler(opportunite: Opportunite): void {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      alert('Vous devez être connecté pour postuler.');
+      return;
+    }
+
+    // Récupération du profil connecté
+    this.adminService.getCurrentAccount().subscribe({
+      next: (user) => {
+        // Création de la candidature
+        const candidature = {
+          lettreMotivation: 'Je suis intéressé par cette opportunité.',
+          datePostulation: new Date().toISOString(), 
+          statutCandidature: 'EN_ATTENTE_VALIDATION_ADMIN',
+          opportunite: { id: opportunite.id },
+          candidat: { id: user.id }
+        };
+
+        // Envoi vers le backend
+        this.candidatureService.addCandidature(candidature).subscribe({
+          next: () => {
+            alert('Votre candidature a été envoyée avec succès !');
+          },
+          error: (err) => {
+            if (err.status === 409) {
+              alert('Vous avez déjà postulé à cette opportunité.');
+            } else {
+              alert('Une erreur est survenue lors de la postulation.');
+            }
+            console.error('Erreur lors de la postulation :', err);
           }
-          console.error('Erreur lors de la postulation :', err);
-        }
-      });
-    },
-    error: (err) => {
-      console.error('Erreur lors de la récupération du compte :', err);
-      alert('Impossible de récupérer votre profil. Veuillez vous reconnecter.');
-    }
-  });
-}
+        });
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération du compte :', err);
+        alert('Impossible de récupérer votre profil. Veuillez vous reconnecter.');
+      }
+    });
+  }
 
-dejaPostule(opportuniteId: number): boolean {
-  return this.candidatures.some(c => c.opportunite?.id === opportuniteId);
-}
+  dejaPostule(opportuniteId: number): boolean {
+    return this.candidatures.some(c => c.opportunite?.id === opportuniteId);
+  }
+
+  rechercher(): void {
+    this.opportuniteService.getAllOpportunites().subscribe({
+      next: (data: Opportunite[]) => {
+        // Filtrer les opportunités actives
+        let filtered = data.filter(o => o.statut === 'ACTIVE');
+
+        // Appliquer les filtres choisis
+        if (this.selectedDomaineId) {
+          filtered = filtered.filter(o => o.domaine?.id === this.selectedDomaineId);
+        }
+        if (this.selectedTypeContrat) {
+          filtered = filtered.filter(o => o.typeContrat === this.selectedTypeContrat);
+        }
+        if (this.selectedVilleId) {
+          filtered = filtered.filter(o => o.ville?.id === this.selectedVilleId);
+        }
+        if (this.selectedSalaireMin > 0) {
+          filtered = filtered.filter(o => (o.salaire ?? 0) >= this.selectedSalaireMin);
+        }
+
+        // Mettre à jour la liste affichée
+        this.opportunites = filtered;
+        this.totalOpportunites = filtered.length;
+
+        if (filtered.length === 0) {
+          this.showAlert('Aucune opportunité ne correspond à vos critères.', 'info');
+        } else {
+          this.showAlert(`${filtered.length} opportunité(s) trouvée(s).`, 'success');
+        }
+      },
+      error: (error) => {
+        console.error('Erreur lors de la recherche d’opportunités:', error);
+        this.showAlert('Erreur lors de la recherche.', 'error');
+      }
+    });
+  }
+
+  resetRecherche(): void {
+    this.selectedDomaineId = null;
+    this.selectedTypeContrat = null;
+    this.selectedVilleId = null;
+    this.selectedSalaireMin = 0;
+    this.loadOpportunites(); // recharge toutes les opportunités
+  }
+
 }

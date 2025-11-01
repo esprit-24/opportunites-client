@@ -1,0 +1,21 @@
+.profil-section {
+    background: var(--light-gray);
+    min-height: 100vh;
+  }
+  
+  .card {
+    border-radius: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .badge {
+    font-size: 0.85rem;
+    border-radius: 15px;
+    text-transform: capitalize;
+  }
+  

@@ -102,3 +102,88 @@ body {
     font-size: 1.1rem !important;
   }
 }
+
+/* === STYLES GLOBAUX === */
+:root {
+  --primary-green: #00a651;
+  --dark-green: #007a3d;
+  --primary-yellow: #f1c40f;
+  --light-green: #2ecc71;
+  --dark-gray: #2c3e50;
+  --light-gray: #f8f9fa;
+  --white: #ffffff;
+}
+
+/* === NAVBAR === */
+.navbar-custom {
+  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white !important;
+}
+
+.navbar-nav .nav-link {
+  color: white !important;
+  font-weight: 500;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--primary-yellow) !important;
+  transform: translateY(-2px);
+}
+
+/* === FOOTER === */
+.footer {
+  background: var(--dark-gray);
+  color: white;
+  padding: 3rem 0 1rem;
+}
+
+.footer-title {
+  color: var(--primary-yellow);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-link {
+  color: #bdc3c7;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.footer-link:hover {
+  color: var(--primary-yellow);
+}
+
+.footer-divider {
+  border-color: #495057;
+}
+
+/* === BOUTONS === */
+.btn-danger-custom {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3);
+}
+
+.btn-danger-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.4);
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+}
